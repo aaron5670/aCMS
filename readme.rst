@@ -2,10 +2,10 @@
 aCMS created by CodeIgniter 3
 ###################
 
-content management system with a powerfull front-end form and template builder.
+A Content Management System with a powerful front-end form, wizard & template builder.
 
 *********
 Features
 *********
 
-follows soon!
+Follows soon!
