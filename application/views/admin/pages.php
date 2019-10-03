@@ -48,7 +48,7 @@
 								<thead>
 								<tr>
 									<th style="width: 25%">Pagina</th>
-									<th style="width: 20%">Slug</th>
+									<th style="width: 20%">Pagina template</th>
 									<th>Laatst bewerkt</th>
 									<th style="width: 10%">Gepubliceerd</th>
 									<th>Acties</th>
@@ -57,33 +57,37 @@
 								<tfoot>
 								<tr>
 									<th>Pagina</th>
-									<th>Slug</th>
+									<th>Pagina template</th>
 									<th>Laatst bewerkt</th>
 									<th>Gepubliceerd</th>
 									<th>Acties</th>
 								</tr>
 								</tfoot>
 								<tbody>
-								<tr>
-									<td>Home</td>
-									<td>/</td>
-									<td><?= date('m-d-Y') ?> (door Aaron)</td>
-									<td><i class="btn btn-success btn-circle btn-sm fas fa-check-circle"></i></td>
-									<td>
-										<a href="#" class="btn btn-warning btn-circle btn-sm">
-											<i class="fas fa-edit"></i>
-										</a>
-										<a href="#" class="btn btn-success btn-circle btn-sm">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</td>
-								</tr>
-
-								<tr>
+								<?php foreach ($pages as $page): ?>
+									<tr>
+										<td><?= $page->page_title; ?></td>
+										<td><?= $page->template_name; ?></td>
+										<td><?= $page->updated_on; ?> (door <?= $page->first_name; ?>)</td>
+										<td><i class="btn btn-success btn-circle btn-sm fas fa-check-circle"></i></td>
+										<td>
+											<a href="<?= site_url($page->slug) ?>" class="btn btn-success btn-circle btn-sm" target="_blank">
+												<i class="fas fa-external-link-alt"></i>
+											</a>
+											<a href="#" class="btn btn-warning btn-circle btn-sm">
+												<i class="fas fa-edit"></i>
+											</a>
+											<a href="#" class="btn btn-danger btn-circle btn-sm">
+												<i class="fas fa-trash-alt"></i>
+											</a>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+<!--								<tr>
 									<td>Contact</td>
 									<td>/contact</td>
-									<td><?= date('m-d-Y') ?> (door Gerrit)</td>
-									<td><i class="btn btn-danger btn-circle btn-sm fas fa-check-circle"></i></td>
+									<td><?/*= date('m-d-Y') */?> (door Gerrit)</td>
+									<td><i class="btn btn-danger btn-circle btn-sm fas fa-times-circle"></i></td>
 									<td>
 										<a href="#" class="btn btn-warning btn-circle btn-sm">
 											<i class="fas fa-edit"></i>
@@ -92,7 +96,7 @@
 											<i class="fas fa-external-link-alt"></i>
 										</a>
 									</td>
-								</tr>
+								</tr>-->
 								</tbody>
 							</table>
 						</div>

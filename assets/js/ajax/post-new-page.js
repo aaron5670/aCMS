@@ -17,7 +17,7 @@ $('select#template-id').change(function () {
                         type: 'POST',
                         data: submission,
                         error: function (error) {
-                            //$('html').html(error.responseText);
+                            // $('html').html(error.responseText);
                             toastr["warning"]("Er is iets fout gegaan. Probeer het nog is...", "Oeps");
 
                             toastr.options = {

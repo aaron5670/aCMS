@@ -14,7 +14,6 @@ class Template extends CI_Model {
 	}
 
 	function getRows($columns = array()) {
-
 		if ($columns) {
 			$this->db->select(implode(", ", $columns));
 		}

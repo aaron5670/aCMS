@@ -17,8 +17,9 @@ class Pages extends CI_Controller {
 
 	public function index() {
 		$this->load->model('admin/page');
+		$data['pages'] = $this->page->getAllPageInfo(array('page_title','template_name', 'updated_on', 'first_name', 'slug'));
 
-		$this->load->view('admin/pages');
+		$this->load->view('admin/pages', $data);
 	}
 
 	public function newPage() {
