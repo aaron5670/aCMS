@@ -88,56 +88,5 @@
 <!-- Custom scripts for all pages-->
 <script src="<?= asset_url() ?>js/sb-admin-2.min.js"></script>
 
-<!--Formio.js-->
-<script type="text/javascript">
-    var jsonElement = document.getElementById('json');
-    var formElement = document.getElementById('formio');
-    var subJSON = document.getElementById('subjson');
-    var builder = new Formio.FormBuilder(document.getElementById("builder"), {
-        display: 'form',
-        components: [],
-        settings: {
-            pdf: {
-                "id": "1ec0f8ee-6685-5d98-a847-26f67b67d6f0",
-                "src": "https://files.form.io/pdf/5692b91fd1028f01000407e3/file/1ec0f8ee-6685-5d98-a847-26f67b67d6f0"
-            }
-        }
-    }, {
-        baseUrl: 'https://examples.form.io'
-    });
-
-    var onForm = function (form) {
-        form.on('change', function () {
-            subJSON.innerHTML = '';
-            subJSON.appendChild(document.createTextNode(JSON.stringify(form.submission, null, 4)));
-        });
-    };
-
-    var onBuild = function (build) {
-        jsonElement.innerHTML = '';
-        formElement.innerHTML = '';
-        jsonElement.appendChild(document.createTextNode(JSON.stringify(builder.instance.schema, null, 4)));
-        Formio.createForm(formElement, builder.instance.form).then(onForm);
-    };
-
-    var onReady = function () {
-        var jsonElement = document.getElementById('json');
-        var formElement = document.getElementById('formio');
-        builder.instance.on('saveComponent', onBuild);
-        builder.instance.on('editComponent', onBuild);
-    };
-
-    var setDisplay = function (display) {
-        builder.setDisplay(display).then(onReady);
-    };
-
-    // Handle the form selection.
-    var formSelect = document.getElementById('form-select');
-    formSelect.addEventListener("change", function () {
-        setDisplay(this.value);
-    });
-
-    builder.instance.ready.then(onReady);
-</script>
 </body>
 </html>
