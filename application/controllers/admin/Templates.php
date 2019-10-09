@@ -33,20 +33,28 @@ class Templates extends CI_Controller {
 	}
 
 	public function newTemplate() {
-		$this->load->view('admin/new_template');
+		$this->load->model(array('admin/template', 'admin/settings_model'));
+		$data['unusedTemplates'] = $this->template->getUnusedThemeTemplateFiles();
+
+		$data['siteTheme'] = $this->settings_model->getSettings(array('site_theme'));
+
+		$this->load->view('admin/new_template', $data);
 	}
 
 	//ToDo: Validatie en formulier in view maken via CI form builder
 	public function newTemplatePost() {
 
 		$templateName = $this->input->post('templateName');
+		$templateFile = $this->input->post('templateFile');
+
 		$templateTableName = 'acms_tpl_' . (strtolower(str_replace(' ', '_', $templateName)));
 
 		$data = array(
-			'template_name' => $templateName,
+			'template_name'       => $templateName,
 			'template_table_name' => $templateTableName,
-			'template_json' => $this->input->post('jsonElement'),
-			'last_updated'  => date("Y-m-d H:i:s"),
+			'template_file_name'  => $templateFile,
+			'template_json'       => $this->input->post('jsonElement'),
+			'last_updated'        => date("Y-m-d H:i:s"),
 		);
 		$this->db->trans_start();
 		$this->db->insert('acms_templates', $data);
@@ -56,13 +64,13 @@ class Templates extends CI_Controller {
 
 		$dbFields = array();
 		$dbFields['page_id'] = array(
-			'type'     => 'INT',
+			'type'       => 'INT',
 			'constraint' => 11,
 		);
 		foreach ($template->components as $component) {
 			$dbFields[$component->key] = array(
-				'type'     => 'TEXT',
-				'default' => NULL,
+				'type'    => 'TEXT',
+				'default' => null,
 			);
 		}
 
@@ -85,17 +93,15 @@ class Templates extends CI_Controller {
 
 			$this->load->model('admin/page');
 			if ($this->page->checkIfPageWithTemplateExist($id)) {
-				redirect('/admin/templates?error=some-pages-uses-this-template');
+				redirect('/admin/templates?message=some-pages-uses-this-template');
 				exit();
 			}
 
 			$this->load->model('admin/template');
-			$data['template'] = $this->template->delRow($id);
-			$this->load->view('admin/single_template', $data);
-			redirect('/admin/templates');
+			$this->template->delRow($id);
+			redirect('/admin/templates?message=successfully-deleted');
 		} else {
 			redirect('/admin/templates');
 		}
 	}
-
 }

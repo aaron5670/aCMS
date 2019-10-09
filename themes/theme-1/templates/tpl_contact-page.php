@@ -1,0 +1,1 @@
+<h2>Dit is een leeg contact template.</h2>

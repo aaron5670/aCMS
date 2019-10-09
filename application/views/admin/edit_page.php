@@ -32,9 +32,9 @@
 			<!-- End of Topbar -->
 
 			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Nieuwe pagina aanmaken</h1>
+				<h1 class="h3 mb-2 text-gray-800">Pagina aanpassen</h1>
 				<p class="mb-4">
-					Hier kunt u een nieuwe pagina aanmaken voor uw website.
+					Hier kunt u een uw huidige pagina aanpassen.
 				</p>
 
 				<div class="row">
@@ -43,7 +43,8 @@
 
 						<div class="form-group">
 							<label for="pageTitle">Paginatitel</label>
-							<input type="text" name="page-title" class="form-control" id="pageTitle" autofocus>
+							<input type="text" name="page-title" value="<?= $pageTitle; ?>" class="form-control"
+							       id="pageTitle" autofocus>
 						</div>
 
 						<div class="form-group">
@@ -52,7 +53,8 @@
 								<div class="input-group-prepend">
 									<div class="form-control-sm input-group-text form-slug-control"><?= base_url(); ?></div>
 								</div>
-								<input type="text" name="page-slug" class="form-control form-control-sm"
+								<input type="text" name="page-slug" value="<?= $pageSlug; ?>"
+								       class="form-control form-control-sm"
 								       aria-describedby="pageSlugHelp" id="pageSlug">
 							</div>
 							<small id="pageSlugHelp" class="form-text text-muted">De pagina slug (url) moet uniek
@@ -82,10 +84,16 @@
 									<div class="form-group">
 										<label for="page-status">Pagina status</label>
 										<select class="form-control" id="page-status" name="page-status">
-											<option value="published" selected>Publiceren</option>
-											<option value="concept">Concept</option>
+											<?php if ($pageStatus === 'published') : ?>
+												<option value="published" selected>Publiceren</option>
+												<option value="concept">Concept</option>
+											<?php else: ?>
+												<option value="concept" selected>Concept</option>
+												<option value="published">Publiceren</option>
+											<?php endif; ?>
 										</select>
 									</div>
+									<a href="#" class="text-danger" data-toggle="modal" data-target="#paginaVerwijderenModal">Pagina verwijderen</a>
 								</div>
 							</div>
 						</div>
@@ -99,17 +107,7 @@
 							<div id="templateSettings" style="">
 								<div class="card-body">
 									<div class="form-group">
-										<?php if (!$templates): ?>
-											<p><i>Geen templates beschikbaar.</i></p>
-										<?php else: ?>
-											<label for="template-id">Pagina template</label>
-											<select class="form-control" id="template-id" name="template-id">
-												<?php foreach ($templates as $template): ?>
-													<option value="<?= $template->id ?>"
-													        selected><?= $template->template_name ?></option>
-												<?php endforeach; ?>
-											</select>
-										<?php endif; ?>
+										<p>Deze pagina gebruikt het template: <b><?= $pageTemplate ?></b></p>
 									</div>
 								</div>
 							</div>
@@ -133,6 +131,28 @@
 	<i class="fas fa-angle-up"></i>
 </a>
 
+<!-- Delete page modal -->
+<div class="modal fade" id="paginaVerwijderenModal" tabindex="-1" role="dialog" aria-labelledby="paginaVerwijderenLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="paginaVerwijderenLabel">Pagina verwijderen</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<b>Let op!</b>
+				<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+				<a href="<?= site_url('admin/pages/del/' . $pageID) ?>" class="btn btn-danger">Pagina verwijderen</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- Logout Modal-->
 <?php $this->view('admin/parts/logout_modal'); ?>
 
@@ -146,8 +166,43 @@
 <!-- Custom scripts for all pages-->
 <script src="<?= asset_url() ?>js/sb-admin-2.min.js"></script>
 
-<!-- Ajax post request for new page with the Formio.js form -->
-<script src="<?= asset_url() ?>js/ajax/post-new-page.js"></script>
+<!-- Ajax request for editing a page with the Formio.js form -->
+<script type='text/javascript'>
+    window.onload = function () {
+
+        let template = <?= $currentTemplate; ?>;
+
+        Formio.createForm(document.getElementById('contentArea'), template).then(function (form) {
+            form.on('submit', (submission) => {
+
+                submission.pageTitle = $("input#pageTitle").val();
+                submission.pageSlug = $("input#pageSlug").val();
+                // submission.templateId = $('select#template-id').val();
+                submission.pageStatus = $('select#page-status').val();
+                submission.pageID = <?= $pageID ?>;
+                submission.pageTemplateTable = '<?= $pageTemplateTable ?>';
+
+                return $.ajax({
+                        url: '/admin/edit/page',
+                        type: 'POST',
+                        data: submission,
+                        error: function (error) {
+                            //console.log(error);
+                            window.location.replace('/admin/pages/edit/<?= $pageID ?>?message=error');
+                        },
+                        success: function (data) {
+                            window.location.replace('/admin/pages/edit/<?= $pageID ?>?message=success');
+                        }
+                    }
+                );
+            });
+            form.on('error', (errors) => {
+                console.log('There are some errors..');
+                console.log(errors);
+            });
+        });
+    };
+</script>
 
 <!-- Toastr-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

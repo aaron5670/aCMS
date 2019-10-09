@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends CI_Controller {
+class Logs extends CI_Controller {
 	public $data = array();
 
 	public function __construct() {
@@ -16,12 +16,10 @@ class Users extends CI_Controller {
 	}
 
 	public function index() {
-		$data['users'] = $this->ion_auth->users()->result();
-		foreach ($data['users'] as $k => $user) {
-			$data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-		}
+		$this->load->library('logviewer');
+		$data['logViewer'] = $this->logviewer->showLogs();
 
-		$this->load->view('admin/users', $data);
+		$this->load->view('admin/logs', $data);
 	}
 
 }

@@ -1,8 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-//ToDo: deze Admin Controller nog uitsplitten in een mapje Admin met daarin verschillende controllers.
-
-
 class Settings extends CI_Controller {
 	public $data = array();
 
@@ -19,7 +16,23 @@ class Settings extends CI_Controller {
 	}
 
 	public function index() {
-		$this->load->view('admin/settings');
+		$this->load->model('admin/settings_model');
+		$data['themes'] = $this->settings_model->getThemes();
+		$data['settings'] = $this->settings_model->getSettings();
+
+		$this->load->view('admin/settings', $data);
+	}
+
+	public function changeSettings() {
+		$postData = $this->input->post();
+
+		$data = array(
+			'id' => 1,
+			'site_title' => $postData['siteTitle'],
+			'site_theme' => $postData['siteTheme'],
+			'updated_on' => date("Y-m-d H:i:s"),
+		);
+		$this->db->replace('acms_settings', $data);
 	}
 
 }

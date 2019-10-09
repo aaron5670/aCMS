@@ -4,11 +4,11 @@
 	<!-- Load default head -->
 	<?php $this->view('admin/parts/head'); ?>
 
-	<!-- Page title -->
-	<title>aCMS - Gebruikers</title>
-
 	<!-- Custom styles for this page -->
 	<link href="<?= asset_url() ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Page title -->
+	<title>aCMS - Website logs</title>
 </head>
 
 <body id="page-top">
@@ -33,49 +33,12 @@
 			<div class="container-fluid">
 
 				<!-- Page Heading -->
-				<h1 class="h3 mb-2 text-gray-800">Alle gebruikers</h1>
+				<h1 class="h3 mb-2 text-gray-800">Website logs</h1>
 				<p class="mb-4">
-					Een overzicht van alle gebruikers.
+					Een overzicht alle website error logs.
 				</p>
 
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h6 class="m-0 font-weight-bold text-primary">Alle gebruikers</h6>
-					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-								<thead>
-								<tr>
-									<th><?php echo lang('index_fname_th'); ?></th>
-									<th><?php echo lang('index_lname_th'); ?></th>
-									<th><?php echo lang('index_email_th'); ?></th>
-									<th><?php echo lang('index_groups_th'); ?></th>
-									<th><?php echo lang('index_status_th'); ?></th>
-									<th><?php echo lang('index_action_th'); ?></th>
-								</tr>
-								</thead>
-								<tbody>
-								<?php foreach ($users as $user): ?>
-									<tr>
-										<td><?php echo htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8'); ?></td>
-										<td><?php echo htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8'); ?></td>
-										<td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?></td>
-										<td>
-											<?php foreach ($user->groups as $group): ?>
-												<?php echo anchor("auth/edit_group/" . $group->id, htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8')); ?>
-												<br/>
-											<?php endforeach ?>
-										</td>
-										<td><?php echo ($user->active) ? anchor("auth/deactivate/" . $user->id, lang('index_active_link')) : anchor("auth/activate/" . $user->id, lang('index_inactive_link')); ?></td>
-										<td><?php echo anchor("auth/edit_user/" . $user->id, 'Edit'); ?></td>
-									</tr>
-								<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
+				<?= $logViewer ?>
 
 			</div>
 			<!-- /.container-fluid -->
@@ -111,12 +74,40 @@
 <!-- Custom scripts for all pages-->
 <script src="<?= asset_url() ?>js/sb-admin-2.min.js"></script>
 
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- Page level plugins -->
 <script src="<?= asset_url() ?>vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= asset_url() ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
 <script src="<?= asset_url() ?>js/demo/datatables-demo.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('.table-container tr').on('click', function () {
+            $('#' + $(this).data('display')).toggle();
+        });
+
+        $('#table-log').DataTable({
+            "order": [],
+            "stateSave": true,
+            "stateSaveCallback": function (settings, data) {
+                window.localStorage.setItem("datatable", JSON.stringify(data));
+            },
+            "stateLoadCallback": function (settings) {
+                var data = JSON.parse(window.localStorage.getItem("datatable"));
+                if (data) data.start = 0;
+                return data;
+            }
+        });
+        $('#delete-log, #delete-all-log').click(function () {
+            return confirm('Are you sure?');
+        });
+    });
+</script>
+
 
 </body>
 </html>

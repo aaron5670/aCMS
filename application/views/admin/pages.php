@@ -9,6 +9,9 @@
 
 	<!-- Custom styles for this page -->
 	<link href="<?= asset_url() ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<!-- Toastr -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
 </head>
 
 <body id="page-top">
@@ -69,34 +72,29 @@
 										<td><?= $page->page_title; ?></td>
 										<td><?= $page->template_name; ?></td>
 										<td><?= $page->updated_on; ?> (door <?= $page->first_name; ?>)</td>
-										<td><i class="btn btn-success btn-circle btn-sm fas fa-check-circle"></i></td>
 										<td>
-											<a href="<?= site_url($page->slug) ?>" class="btn btn-success btn-circle btn-sm" target="_blank">
+											<?php if ($page->page_status === 'published'): ?>
+												<i class="btn btn-success btn-circle btn-sm fas fa-check-circle"></i>
+											<?php else: ?>
+												<i class="btn btn-danger btn-circle btn-sm fas fa-times-circle"></i>
+											<?php endif; ?>
+										</td>
+										<td>
+											<a href="<?= site_url($page->slug) ?>"
+											   class="btn btn-success btn-circle btn-sm" target="_blank">
 												<i class="fas fa-external-link-alt"></i>
 											</a>
-											<a href="#" class="btn btn-warning btn-circle btn-sm">
+											<a href="<?= site_url('admin/pages/edit/' . $page->id) ?>"
+											   class="btn btn-warning btn-circle btn-sm">
 												<i class="fas fa-edit"></i>
 											</a>
-											<a href="#" class="btn btn-danger btn-circle btn-sm">
+											<a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal"
+											   data-target="#deletePageModal">
 												<i class="fas fa-trash-alt"></i>
 											</a>
 										</td>
 									</tr>
 								<?php endforeach; ?>
-<!--								<tr>
-									<td>Contact</td>
-									<td>/contact</td>
-									<td><?/*= date('m-d-Y') */?> (door Gerrit)</td>
-									<td><i class="btn btn-danger btn-circle btn-sm fas fa-times-circle"></i></td>
-									<td>
-										<a href="#" class="btn btn-warning btn-circle btn-sm">
-											<i class="fas fa-edit"></i>
-										</a>
-										<a href="#" class="btn btn-success btn-circle btn-sm">
-											<i class="fas fa-external-link-alt"></i>
-										</a>
-									</td>
-								</tr>-->
 								</tbody>
 							</table>
 						</div>
@@ -124,6 +122,29 @@
 	<i class="fas fa-angle-up"></i>
 </a>
 
+<!-- Delete page modal -->
+<div class="modal fade" id="deletePageModal" tabindex="-1" role="dialog" aria-labelledby="deletePageLabel"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deletePageLabel">Pagina verwijderen</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<b>Let op!</b>
+				<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+				<a href="<?= site_url('admin/pages/del/' . $page->id) ?>" class="btn btn-danger">Pagina verwijderen</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- Logout Modal-->
 <?php $this->view('admin/parts/logout_modal'); ?>
 
@@ -143,6 +164,12 @@
 
 <!-- Page level custom scripts -->
 <script src="<?= asset_url() ?>js/demo/datatables-demo.js"></script>
+
+<!-- Toastr-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!--Toastr success and error notifications-->
+<script src="<?= asset_url() ?>js/toastr-page-edited.js"></script>
 
 </body>
 </html>

@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+//ToDo: Create dynamic homepage
 
 $route['default_controller'] = 'home';
 $route['translate_uri_dashes'] = false;
@@ -64,10 +65,12 @@ $route['translate_uri_dashes'] = false;
 $route['admin'] = 'admin/dashboard';
 
 $route['admin/pages'] = 'admin/pages';
-$route['admin/new-page'] = 'admin/pages/newPage';
+$route['admin/pages/new-page'] = 'admin/pages/newPage';
 $route['admin/add/page']['post'] = 'admin/pages/newPagePost';
+$route['admin/edit/page']['post'] = 'admin/pages/editPagePost';
+$route['admin/pages/edit/(:num)'] = 'admin/pages/editPage/$1';
 
-$route['admin/new-template'] = 'admin/templates/newTemplate';
+$route['admin/templates/new-template'] = 'admin/templates/newTemplate';
 $route['admin/add/template']['post'] = 'admin/templates/newTemplatePost';
 
 
@@ -82,6 +85,7 @@ $route['admin/add/template']['post'] = 'admin/templates/newTemplatePost';
 require_once (BASEPATH .'database/DB.php');
 $db =& DB();
 
+$query = $db->where('page_status', 'published');
 $query = $db->get('acms_routes');
 $result = $query->result();
 

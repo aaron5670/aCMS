@@ -4,7 +4,6 @@ if (!defined('BASEPATH')) {
 }
 
 class Template extends CI_Model {
-
 	public function __construct() {
 		parent::__construct();
 
@@ -29,6 +28,32 @@ class Template extends CI_Model {
 
 		$query = $this->db->get($this->templatesTable);
 		return $query->result();
+	}
+
+	function getThemeTemplateFiles() {
+		//load page model
+		$this->load->model('admin/settings_model');
+
+		//get all theme templates
+		$themeTemplates = $this->settings_model->getCurrentTheme() . '\templates';
+		return preg_grep('~^tpl_.*\.php$~', scandir($themeTemplates));
+	}
+
+	function getUnusedThemeTemplateFiles() {
+		$templateFiles = $this->getThemeTemplateFiles();
+
+		$this->db->select('template_file_name');
+		$this->db->from('acms_templates');
+		$query = $this->db->get();
+		$usedTemplates = $query->result();
+
+		$usedTemplateFiles = array();
+		foreach ($usedTemplates as $templateFile) {
+			$usedTemplateFiles[] = $templateFile->template_file_name;
+		}
+
+		//compare two arrays and returns unused template files
+		return array_diff($templateFiles, $usedTemplateFiles);
 	}
 
 	function delRow($id = null) {

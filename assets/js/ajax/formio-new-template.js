@@ -49,6 +49,7 @@ $('form').submit(function (e) {
 
     var data = {
         templateName : $("input[name='templateName']").val(),
+        templateFile : $("select[name='templateFile']").val(),
         jsonElement : jsonElement.innerHTML,
     };
 
@@ -58,6 +59,7 @@ $('form').submit(function (e) {
         data: data,
         error: function(error) {
             // $('html').html(error);
+            console.log(error)
             toastr["warning"]("Er is iets fout gegaan. Probeer het nog is...", "Oeps");
 
             toastr.options = {
@@ -80,25 +82,7 @@ $('form').submit(function (e) {
         },
         success: function(response) {
             // $('html').html(response);
-            toastr["success"]("Template succesvol aangemaakt!", "Succes")
-
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "2500",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
+            window.location.replace('/admin/templates?message=successfully-added');
         }
     });
 });

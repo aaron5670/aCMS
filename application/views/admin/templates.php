@@ -10,6 +10,8 @@
 	<!-- Custom styles for this page -->
 	<link href="<?= asset_url() ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+	<!-- Toastr -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
 </head>
 
 <body id="page-top">
@@ -75,7 +77,8 @@
 											<a href="#" class="btn btn-warning btn-circle btn-sm">
 												<i class="fas fa-edit"></i>
 											</a>
-											<a href="<?= site_url('/admin/templates/del/') . $template->id ?>" class="btn btn-danger btn-circle btn-sm">
+											<a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal"
+											   data-target="#deleteTemplateModal">
 												<i class="fas fa-trash-alt"></i>
 											</a>
 										</td>
@@ -104,6 +107,29 @@
 	<i class="fas fa-angle-up"></i>
 </a>
 
+<!-- Delete template modal -->
+<div class="modal fade" id="deleteTemplateModal" tabindex="-1" role="dialog" aria-labelledby="deleteTemplateLabel"
+     aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteTemplateLabel">Template verwijderen</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<b>Let op!</b>
+				<p>Als je dit template verwijderd kan je hem niet meer terug krijgen!</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+				<a href="<?= site_url('admin/templates/del/' . $template->id) ?>" class="btn btn-danger">Template verwijderen</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- Logout Modal-->
 <?php $this->view('admin/parts/logout_modal'); ?>
 
@@ -123,6 +149,12 @@
 
 <!-- Page level custom scripts -->
 <script src="<?= asset_url() ?>js/demo/datatables-demo.js"></script>
+
+<!-- Toastr-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!--Toastr success and error notifications-->
+<script src="<?= asset_url() ?>js/toastr-template.js"></script>
 
 </body>
 </html>
