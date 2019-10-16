@@ -1,10 +1,25 @@
 var jsonElement = document.getElementById('json');
 var formElement = document.getElementById('formio');
 var subJSON = document.getElementById('subjson');
-var builder = new Formio.FormBuilder(document.getElementById("builder"), {
-    display: 'form',
-    components: [],
-    settings: {}
+
+var builder = new Formio.FormBuilder(document.getElementById('builder'), {
+    "display": "form",
+    "settings": {},
+    "components": [
+        {
+            "label": "Text Field",
+            "key": "textField",
+            "type": "textfield",
+            "input": true
+        },
+        {
+            "type": "button",
+            "label": "Submit",
+            "key": "submit",
+            "disableOnInvalid": true,
+            "input": true
+        }
+    ]
 });
 
 var onForm = function (form) {

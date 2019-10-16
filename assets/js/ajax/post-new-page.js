@@ -18,10 +18,13 @@ function form() {
                         type: 'POST',
                         data: submission,
                         error: function (error) {
-                            //console.log(error);
+                            // console.log(error);
+                            // $('html').html(error.responseText)
                             window.location.replace('/admin/pages/new-page?message=error');
                         },
                         success: function (data) {
+                            // console.log(data)
+                            // $('html').html(data)
                             window.location.replace('/admin/pages?message=success');
                         }
                     });

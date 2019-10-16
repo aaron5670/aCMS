@@ -41,6 +41,8 @@
 
 					<div class="col-lg-9">
 
+						<input type="hidden" name="pageID" id="pageID" value="<?= $pageID ?>">
+
 						<div class="form-group">
 							<label for="pageTitle">Paginatitel</label>
 							<input type="text" name="page-title" value="<?= $pageTitle; ?>" class="form-control"
@@ -48,17 +50,35 @@
 						</div>
 
 						<div class="form-group">
-							<label for="pageSlug">Slug</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="form-control-sm input-group-text form-slug-control"><?= base_url(); ?></div>
+							<?php if ($isHomepage) : ?>
+								<fieldset disabled>
+									<label for="pageSlug">Slug</label>
+									<div class="input-group">
+										<input type="text" name="page-slug" value="<?= base_url(); ?>"
+										       class="form-control form-control-sm"
+										       aria-describedby="pageSlugHelp" id="pageSlug">
+										<div id="feedback"></div>
+									</div>
+									<small id="pageSlugHelp" class="form-text text-muted">
+										Deze pagina is de voorpagina van de website.
+									</small>
+								</fieldset>
+							<?php else: ?>
+								<label for="pageSlug">Slug</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="form-control-sm input-group-text form-slug-control"><?= base_url(); ?></div>
+									</div>
+									<input type="text" name="page-slug" value="<?= $pageSlug; ?>"
+									       class="form-control form-control-sm"
+									       aria-describedby="pageSlugHelp" id="pageSlug" onBlur="checkAvailability()">
+									<div id="feedback"></div>
 								</div>
-								<input type="text" name="page-slug" value="<?= $pageSlug; ?>"
-								       class="form-control form-control-sm"
-								       aria-describedby="pageSlugHelp" id="pageSlug">
-							</div>
-							<small id="pageSlugHelp" class="form-text text-muted">De pagina slug (url) moet uniek
-								zijn.</small>
+								<small id="pageSlugHelp" class="form-text text-muted">
+									<i class="fas fa-spinner fa-spin" id="loaderIcon" style="display: none;"></i>
+									De pagina slug (url) moet uniek zijn.
+								</small>
+							<?php endif; ?>
 						</div>
 
 						<div class="card shadow mb-4">
@@ -81,19 +101,27 @@
 							</a>
 							<div class="collapse show" id="pageSettings" style="">
 								<div class="card-body">
-									<div class="form-group">
-										<label for="page-status">Pagina status</label>
-										<select class="form-control" id="page-status" name="page-status">
-											<?php if ($pageStatus === 'published') : ?>
-												<option value="published" selected>Publiceren</option>
-												<option value="concept">Concept</option>
-											<?php else: ?>
-												<option value="concept" selected>Concept</option>
-												<option value="published">Publiceren</option>
-											<?php endif; ?>
-										</select>
-									</div>
-									<a href="#" class="text-danger" data-toggle="modal" data-target="#paginaVerwijderenModal">Pagina verwijderen</a>
+									<?php if (!$isHomepage) : ?>
+										<div class="form-group">
+											<label for="page-status">Pagina status</label>
+											<select class="form-control" id="page-status" name="page-status">
+												<?php if ($pageStatus === 'published') : ?>
+													<option value="published" selected>Publiceren</option>
+													<option value="concept">Concept</option>
+												<?php else: ?>
+													<option value="concept" selected>Concept</option>
+													<option value="published">Publiceren</option>
+												<?php endif; ?>
+											</select>
+										</div>
+									<?php else: ?>
+										<p>
+											<b>Pagina status:</b><br/>
+											Voorpagina
+										</p>
+									<?php endif; ?>
+									<a href="#" class="text-danger" data-toggle="modal"
+									   data-target="#paginaVerwijderenModal">Pagina verwijderen</a>
 								</div>
 							</div>
 						</div>
@@ -132,7 +160,8 @@
 </a>
 
 <!-- Delete page modal -->
-<div class="modal fade" id="paginaVerwijderenModal" tabindex="-1" role="dialog" aria-labelledby="paginaVerwijderenLabel" aria-hidden="true">
+<div class="modal fade" id="paginaVerwijderenModal" tabindex="-1" role="dialog" aria-labelledby="paginaVerwijderenLabel"
+     aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -209,6 +238,9 @@
 
 <!--Toastr success and error notifications-->
 <script src="<?= asset_url() ?>js/toastr-page-edited.js"></script>
+
+<!--Page slug input spacebar to dash (-) converter & slug availability checker -->
+<script src="<?= asset_url() ?>js/ajax/slug-availability-checker.js"></script>
 
 </body>
 </html>

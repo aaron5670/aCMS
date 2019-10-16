@@ -2,7 +2,6 @@
 
 	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin') ?>">
 		<div class="sidebar-brand-icon">
-<!--			<i class="fas fa-laugh-wink"></i>-->
 			<img src="<?= asset_url() ?>/img/logo-white.png" width="50" alt="">
 		</div>
 		<div class="sidebar-brand-text mx-3"><sup>a</sup>CMS</div>
@@ -47,6 +46,20 @@
 		</div>
 	</li>
 
+	<li class="nav-item <?= active_menu(array('/admin/menu')); ?>">
+		<a class="nav-link" href="<?= site_url('admin/menu'); ?>">
+			<i class="fas fa-bars"></i>
+			<span>Menu</span>
+		</a>
+	</li>
+
+	<li class="nav-item <?= active_menu(array('/admin/settings')); ?>">
+		<a class="nav-link" href="<?= site_url('admin/settings'); ?>">
+			<i class="fas fa-cog"></i>
+			<span>Website instellingen</span>
+		</a>
+	</li>
+
 	<hr class="sidebar-divider">
 
 	<div class="sidebar-heading">
@@ -79,10 +92,10 @@
 		</div>
 	</li>
 
-	<li class="nav-item <?= active_menu(array('/admin/settings')); ?>">
-		<a class="nav-link" href="<?= site_url('admin/settings'); ?>">
+	<li class="nav-item <?= active_menu(array('/admin/settings/cms')); ?>">
+		<a class="nav-link" href="<?= site_url('admin/settings/cms'); ?>">
 			<i class="fas fa-cogs"></i>
-			<span>Website instellingen</span>
+			<span>aCMS instellingen</span>
 		</a>
 	</li>
 

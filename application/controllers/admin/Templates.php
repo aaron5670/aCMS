@@ -9,6 +9,19 @@ class Templates extends CI_Controller {
 		$this->load->helper(array('language'));
 		$this->lang->load('auth');
 
+		/*
+		 * Formio.JS version
+		 * GitHub page: https://github.com/formio/formio.js
+		 * Last version changed & tested on: 2019-10-16
+		 *
+		 * Bugs:
+		 * - Data Map Component not working
+		 *
+		 * Notes:
+		 * - By version 4.3.5 JSON Schema won't load
+		 */
+		$this->formioJS_Version = '4.3.2';
+
 		if (!$this->ion_auth->is_admin()) {
 			redirect('auth/login', 'refresh');
 			exit();
@@ -35,15 +48,14 @@ class Templates extends CI_Controller {
 	public function newTemplate() {
 		$this->load->model(array('admin/template', 'admin/settings_model'));
 		$data['unusedTemplates'] = $this->template->getUnusedThemeTemplateFiles();
-
 		$data['siteTheme'] = $this->settings_model->getSettings(array('site_theme'));
+		$data['formioJS_Version'] = $this->formioJS_Version;
 
 		$this->load->view('admin/new_template', $data);
 	}
 
 	//ToDo: Validatie en formulier in view maken via CI form builder
 	public function newTemplatePost() {
-
 		$templateName = $this->input->post('templateName');
 		$templateFile = $this->input->post('templateFile');
 
@@ -68,10 +80,18 @@ class Templates extends CI_Controller {
 			'constraint' => 11,
 		);
 		foreach ($template->components as $component) {
-			$dbFields[$component->key] = array(
-				'type'    => 'TEXT',
-				'default' => null,
-			);
+			//if fileupload datatype is BLOB
+			if (isset($component->storage)) :
+				$dbFields[$component->key] = array(
+					'type'    => 'BLOB',
+					'default' => null,
+				);
+			else:
+				$dbFields[$component->key] = array(
+					'type'    => 'TEXT',
+					'default' => null,
+				);
+			endif;
 		}
 
 		$this->templateTableCreator($dbFields, $templateTableName);
@@ -88,17 +108,30 @@ class Templates extends CI_Controller {
 		$this->dbforge->create_table($templateTableName, true);
 	}
 
-	public function del($id = null) {
-		if ($id) {
+	//ToDo: if pageID is invalid redirect to admin/pages
+	public function editTemplate($templateID) {
+		if ($templateID) {
+			$this->load->model('admin/template');
+			$data['template'] = $this->template->getRow($templateID);
+			$data['formioJS_Version'] = $this->formioJS_Version;
+
+			$this->load->view('admin/edit_template', $data);
+		} else {
+			redirect('/admin/templates');
+		}
+	}
+
+	public function del($templateID = null) {
+		if ($templateID) {
 
 			$this->load->model('admin/page');
-			if ($this->page->checkIfPageWithTemplateExist($id)) {
+			if ($this->page->checkIfPageWithTemplateExist($templateID)) {
 				redirect('/admin/templates?message=some-pages-uses-this-template');
 				exit();
 			}
 
 			$this->load->model('admin/template');
-			$this->template->delRow($id);
+			$this->template->delRow($templateID);
 			redirect('/admin/templates?message=successfully-deleted');
 		} else {
 			redirect('/admin/templates');

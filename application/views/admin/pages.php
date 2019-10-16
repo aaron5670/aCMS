@@ -68,8 +68,13 @@
 								</tfoot>
 								<tbody>
 								<?php foreach ($pages as $page): ?>
-									<tr>
-										<td><?= $page->page_title; ?></td>
+									<?php $isHomepage = $page->is_homepage ? 'style="background: #c7c7c76e;"' : null; ?>
+									<tr <?= $isHomepage ?>>
+										<td><?= $page->page_title; ?>
+											<?php if ($page->is_homepage) : ?>
+												<span class="float-md-right">(<i>voorpagina</i>)</span>
+											<?php endif; ?>
+										</td>
 										<td><?= $page->template_name; ?></td>
 										<td><?= $page->updated_on; ?> (door <?= $page->first_name; ?>)</td>
 										<td>
@@ -80,20 +85,54 @@
 											<?php endif; ?>
 										</td>
 										<td>
-											<a href="<?= site_url($page->slug) ?>"
-											   class="btn btn-success btn-circle btn-sm" target="_blank">
-												<i class="fas fa-external-link-alt"></i>
-											</a>
+											<?php if ($page->page_status === 'published'): ?>
+												<?php if ($page->is_homepage) : ?>
+													<a href="<?= site_url() ?>"
+													   class="btn btn-success btn-circle btn-sm" target="_blank">
+														<i class="fas fa-external-link-alt"></i>
+													</a>
+												<?php else: ?>
+													<a href="<?= site_url($page->slug) ?>"
+													   class="btn btn-success btn-circle btn-sm" target="_blank">
+														<i class="fas fa-external-link-alt"></i>
+													</a>
+												<?php endif; ?>
+											<?php endif; ?>
 											<a href="<?= site_url('admin/pages/edit/' . $page->id) ?>"
 											   class="btn btn-warning btn-circle btn-sm">
 												<i class="fas fa-edit"></i>
 											</a>
 											<a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal"
-											   data-target="#deletePageModal">
+											   data-target="#deletePageModal-<?= $page->id ?>">
 												<i class="fas fa-trash-alt"></i>
 											</a>
 										</td>
 									</tr>
+
+									<!-- Delete page modal -->
+									<div class="modal fade" id="deletePageModal-<?= $page->id ?>" tabindex="-1" role="dialog" aria-labelledby="deletePageLabel"
+									     aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="deletePageLabel">Pagina verwijderen</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<b>Let op!</b>
+													<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+													<a href="<?= site_url('admin/pages/del/' . $page->id) ?>" class="btn btn-danger">Pagina
+														verwijderen</a>
+												</div>
+											</div>
+										</div>
+									</div>
+
 								<?php endforeach; ?>
 								</tbody>
 							</table>
@@ -121,29 +160,6 @@
 <a class="scroll-to-top rounded" href="#page-top">
 	<i class="fas fa-angle-up"></i>
 </a>
-
-<!-- Delete page modal -->
-<div class="modal fade" id="deletePageModal" tabindex="-1" role="dialog" aria-labelledby="deletePageLabel"
-     aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="deletePageLabel">Pagina verwijderen</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<b>Let op!</b>
-				<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
-				<a href="<?= site_url('admin/pages/del/' . $page->id) ?>" class="btn btn-danger">Pagina verwijderen</a>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!-- Logout Modal-->
 <?php $this->view('admin/parts/logout_modal'); ?>

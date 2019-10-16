@@ -15,15 +15,40 @@ class Settings extends CI_Controller {
 		}
 	}
 
-	public function index() {
+	//Admin website settings
+	public function websiteSettings() {
+		$this->load->model('admin/settings_model');
+		$allPages = $this->settings_model->getAllRoutes();
+		$data['pages'] = $allPages;
+
+		$this->load->view('admin/website-settings', $data);
+	}
+
+	public function changeWebsiteSettings() {
+		$postData = $this->input->post();
+
+		$this->db->trans_start();
+		$this->db->set('is_homepage', false);
+		$this->db->update('acms_routes');
+
+		$data = array(
+			'is_homepage' => 1,
+		);
+		$this->db->where('page_id', $postData['siteHomepage']);
+		$this->db->update('acms_routes', $data);
+		$this->db->trans_complete();
+	}
+
+	//Super admin CMS settings
+	public function cmsSettings() {
 		$this->load->model('admin/settings_model');
 		$data['themes'] = $this->settings_model->getThemes();
 		$data['settings'] = $this->settings_model->getSettings();
 
-		$this->load->view('admin/settings', $data);
+		$this->load->view('admin/cms-settings', $data);
 	}
 
-	public function changeSettings() {
+	public function changeCMSSettings() {
 		$postData = $this->input->post();
 
 		$data = array(

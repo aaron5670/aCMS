@@ -33,7 +33,7 @@
 			<div class="container-fluid">
 
 				<!-- Page Heading -->
-				<h1 class="h3 mb-2 text-gray-800">Website instellingen.</h1>
+				<h1 class="h3 mb-2 text-gray-800">Website instellingen</h1>
 				<p class="mb-4">
 					Pas hier de instellingen van de website aan.
 				</p>
@@ -45,35 +45,38 @@
 								<h6 class="m-0 font-weight-bold text-primary">Algemene instellingen</h6>
 							</div>
 							<div class="card-body">
-								<form id="settingsForm" method="post">
-									<div class="form-group">
-										<label for="website-title">Website titel</label>
-										<input type="text" class="form-control" id="website-title" name="siteTitle"
-										       value="<?= $settings->site_title ?>"
-										       aria-describedby="websiteTitleHelp">
-										<small id="websiteTitleHelp" class="form-text text-muted">Dit past de naam van
-											de gehele website aan.</small>
-									</div>
-									<div class="form-group">
-										<label for="website-cms-template">Website template</label>
-										<select class="form-control" id="website-cms-template" name="siteTheme"
-										        aria-describedby="websiteTemplateHelp">
-											<?php
-											foreach ($themes as $theme) :
-												if ($theme === $settings->site_theme) : ?>
-													<option value="<?= $theme; ?>" selected><?= ucfirst(str_replace('themes\\', "", $theme)); ?></option>
-												<?php else: ?>
-													<option value="<?= $theme; ?>"><?= ucfirst(str_replace('themes\\', "", $theme)); ?></option>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										</select>
-										<small id="websiteTemplateHelp" class="form-text text-muted">
-											<strong>Let op:</strong> Dit veranderd de gehele layout van de website! <u>Maak
-												eerst een backup!</u>
-										</small>
-									</div>
-									<button type="submit" class="btn btn-primary">Opslaan</button>
-								</form>
+								<?php if (!$pages) : ?>
+									<p>
+										Zorg dat je eerst een pagina aanmaakt, daarna kan je hier een
+										<b>homepagina</b> selecteren.
+										<br/><br/>
+										<a href="<?= site_url('admin/pages/new-page') ?>">Pagina aanmaken</a>.
+									</p>
+								<?php else: ?>
+									<form id="settingsForm" method="post">
+										<div class="form-group">
+											<label for="siteHomepage">Homepagina</label>
+											<select class="form-control" id="siteHomepage" name="siteHomepage"
+											        aria-describedby="siteHomepageHelp">
+												<?php
+												foreach ($pages as $page) :
+													if ($page->is_homepage == true) : ?>
+														<option value="<?= $page->page_id ?>"
+														        selected><?= $page->page_title ?></option>
+													<?php else: ?>
+														<option value="<?= $page->page_id ?>"><?= $page->page_title ?></option>
+													<?php endif; ?>
+												<?php endforeach; ?>
+											</select>
+											<small id="websiteTemplateHelp" class="form-text text-muted">
+												<strong>Let op:</strong> Dit verandert de landingspagina van de website!
+												<u>Doe
+													dit niet zomaar!</u>
+											</small>
+										</div>
+										<button type="submit" class="btn btn-primary">Opslaan</button>
+									</form>
+								<?php endif; ?>
 							</div>
 						</div>
 
@@ -118,7 +121,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <!-- Ajax post request changing settings -->
-<script src="<?= asset_url() ?>js/ajax/change-settings.js"></script>
+<script src="<?= asset_url() ?>js/ajax/change-website-settings.js"></script>
 
 </body>
 </html>

@@ -50,13 +50,16 @@
 							<label for="pageSlug">Slug</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="form-control-sm input-group-text form-slug-control"><?= base_url(); ?></div>
+									<div class="form-control-sm input-group-text form-slug-control font-weight-bold"><?= base_url(); ?></div>
 								</div>
 								<input type="text" name="page-slug" class="form-control form-control-sm"
-								       aria-describedby="pageSlugHelp" id="pageSlug">
+								       aria-describedby="pageSlugHelp" id="pageSlug" onBlur="checkAvailability()">
+								<div id="feedback"></div>
 							</div>
-							<small id="pageSlugHelp" class="form-text text-muted">De pagina slug (url) moet uniek
-								zijn.</small>
+							<small id="pageSlugHelp" class="form-text text-muted">
+								<i class="fas fa-spinner fa-spin" id="loaderIcon" style="display: none;"></i>
+								De pagina slug (url) moet uniek zijn.
+							</small>
 						</div>
 
 						<div class="card shadow mb-4">
@@ -154,6 +157,9 @@
 
 <!--Toastr success and error notifications-->
 <script src="<?= asset_url() ?>js/toastr-page-edited.js"></script>
+
+<!--Page slug input spacebar to dash (-) converter & slug availability checker -->
+<script src="<?= asset_url() ?>js/ajax/slug-availability-checker.js"></script>
 
 </body>
 </html>

@@ -535,7 +535,7 @@ class Auth extends CI_Controller {
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			$this->session->set_flashdata( 'message', $this->ion_auth->messages() );
-			redirect( "auth", 'refresh' );
+			redirect( "admin/users", 'refresh' );
 		} else {
 			// display the create user form
 			// set the flash data error message if there is one
@@ -590,7 +590,7 @@ class Auth extends CI_Controller {
 				'value' => $this->form_validation->set_value( 'password_confirm' ),
 			);
 
-			$this->_render_page( 'auth' . DIRECTORY_SEPARATOR . 'create_user', $this->data );
+			$this->_render_page( 'admin/users' . DIRECTORY_SEPARATOR . 'create_user', $this->data );
 		}
 	}
 

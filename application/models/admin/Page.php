@@ -38,6 +38,15 @@ class Page extends CI_Model {
 		return $query->row();
 	}
 
+	function getPageMenuData($pageID) {
+		$this->db->select('page_title, slug');
+		$this->db->from($this->pagesTable);
+		$this->db->join('acms_routes', 'acms_routes.page_id = acms_pages.id');
+		$this->db->where('acms_pages.id', $pageID);
+		$query = $this->db->get();
+		return $query->row();
+	}
+
 	function getPageTemplateTableName($pageID) {
 		$this->db->select('template_table_name');
 		$this->db->from('acms_routes');
@@ -133,8 +142,25 @@ class Page extends CI_Model {
 	function delRow($id = null) {
 		if (!$id) return null;
 
-		$this->db->where('id', $id);
-		return $this->db->delete($this->pagesTable);
+		$this->db->from($this->pagesTable);
+		$this->db->join('acms_routes', 'acms_routes.page_id = acms_pages.id');
+		$this->db->where('acms_pages.id', $id);
+		$query = $this->db->get();
+		$result = $query->row();
+
+		echo $result->is_homepage;
+
+		if ($result->is_homepage == true){
+			return array(
+				'error' => "Can't delete the homepage."
+			);
+		}
+
+		if ($result->is_homepage == false) {
+			$this->db->where('id', $id);
+			$this->db->delete($this->pagesTable);
+			return true;
+		}
 	}
 
 }

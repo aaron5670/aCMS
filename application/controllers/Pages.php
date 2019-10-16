@@ -17,18 +17,66 @@ class Pages extends CI_Controller {
 		//get slug without the first slash
 		$slug = $_SERVER['REQUEST_URI'];
 
-		//Get page data
-		$this->data = $this->page_model->getPageData($slug);
-
 		//get site theme and set path location
-		$this->site_theme = '../../' . $this->settings_model->getCurrentTheme();
+		$this->current_theme = $this->settings_model->getCurrentTheme();
+		$this->site_theme_view = '../../' . $this->current_theme;
+		$this->site_theme_path = $this->current_theme . DIRECTORY_SEPARATOR . 'templates';
 
-		//get site theme and set path location
-		$this->page_template = $this->data->template_file_name;
+//		$templatePath = $this->site_theme_path . DIRECTORY_SEPARATOR . 'templates';
+
+		//if page isn't homepage
+		if ($slug !== '/') :
+			//Get page data
+			$this->data = $this->page_model->getPageData($slug);
+
+			//get site theme and set path location
+			$this->page_template = $this->data->template_file_name;
+		endif;
 	}
 
+	//ToDo: pretty error handling if a template isn't found on the server (default template)
+	public function homepage() {
+		$homepageData = $this->page_model->getHomepage();
+		if (file_exists($this->current_theme)) {
+			if ($homepageData) {
+				if (file_exists($this->site_theme_path)) {
+					if (file_exists($this->site_theme_path . DIRECTORY_SEPARATOR . $homepageData->template_file_name)) {
+						$this->load->view($this->site_theme_view . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $homepageData->template_file_name, $homepageData);
+					} else {
+						echo 'Page template <b>' . $this->current_theme . DIRECTORY_SEPARATOR . $homepageData->template_file_name . '</b> not found!';
+					}
+				} else {
+					mkdir($this->site_theme_path, 0777);
+					echo "The directory $this->site_theme_path was not found, but is now successfully created.";
+					exit;
+				}
+			} else {
+				echo 'Geen homepagina gevonden';
+			}
+		} else {
+			echo 'Error theme: <b>' . $this->current_theme . '</b> not found';
+		}
+	}
+
+	//ToDo: pretty error handling if a template isn't found on the server (default template)
 	public function page() {
 		debug($this->data);
-		$this->load->view($this->site_theme . '\\templates\\' . $this->page_template, $this->data);
+
+		if (file_exists($this->current_theme)) {
+			if (file_exists($this->site_theme_path)) {
+				if (file_exists($this->site_theme_path . DIRECTORY_SEPARATOR . $this->page_template)) {
+					$this->load->view($this->site_theme_view . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $this->page_template, $this->data);
+				} else {
+					echo 'Page template <b>' . $this->current_theme . DIRECTORY_SEPARATOR . $this->page_template . '</b> not found!';
+				}
+			} else {
+				mkdir($this->site_theme_path, 0777);
+				echo "The directory $this->site_theme_path was not found, but is now successfully created.";
+				exit;
+			}
+		} else {
+			echo 'Error theme: <b>' . $this->current_theme . '</b> not found';
+		}
+
 	}
 }

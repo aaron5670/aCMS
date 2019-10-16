@@ -10,7 +10,6 @@ class Settings_model extends CI_Model {
 
 		// Load the database library
 		$this->load->database();
-		$this->pagesTable = 'acms_pages';
 	}
 
 	function getSettings($columns = array()) {
@@ -22,7 +21,6 @@ class Settings_model extends CI_Model {
 		return $query->row();
 	}
 
-
 	function getThemes() {
 		return array_filter(glob('themes\*'), 'is_dir');
 	}
@@ -33,6 +31,14 @@ class Settings_model extends CI_Model {
 		$result = $query->row();
 
 		return $result->site_theme;
+	}
+
+	function getAllRoutes() {
+		$this->db->select('page_id, page_title, is_homepage');
+		$this->db->from('acms_pages');
+		$this->db->join('acms_routes', 'acms_routes.page_id = acms_pages.id');
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 }

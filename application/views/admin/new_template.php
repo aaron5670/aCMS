@@ -11,8 +11,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
 
 	<!-- Formio.js -->
-	<link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
-	<script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
+	<link rel='stylesheet' href='https://unpkg.com/formiojs@<?= $formioJS_Version; ?>/dist/formio.full.min.css'>
+	<script src='https://unpkg.com/formiojs@<?= $formioJS_Version; ?>/dist/formio.full.min.js'></script>
 
 	<script type='text/javascript'>
         window.onload = function () {
@@ -56,6 +56,11 @@
 						Dit bestand moet beginnen met: <b>tpl_</b>
 						<br /><br />
 						Voorbeeld: <b>tpl_contact.php</b>
+					</p>
+				<?php elseif(isset($unusedTemplates['error'])): ?>
+					<b>Maak eerst een template directory aan in de huidige themes directory!</b>
+					<p>
+						Zorg ervoor dat dit je templates path wordt: <b><?= FCPATH . $siteTheme->site_theme . '\\templates' ?></b>.
 					</p>
 				<?php else: ?>
 					<form method="post">

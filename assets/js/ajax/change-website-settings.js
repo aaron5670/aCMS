@@ -5,11 +5,11 @@ $('form#settingsForm').submit(function (event) {
 
 
     $.ajax({
-        url: '/admin/settings/changeSettings',
+        url: '/admin/settings/changeWebsiteSettings',
         type: 'POST',
         data: form_data,
         error: function (error) {
-            console.log(error.responseText)
+            // console.log(error.responseText)
             toastr["warning"]("Er is iets fout gegaan. Probeer het nog is...", "Oeps");
 
             toastr.options = {
@@ -31,6 +31,7 @@ $('form#settingsForm').submit(function (event) {
             }
         },
         success: function (data) {
+            // console.log(data)
             toastr["success"]("Website instellingen succesvol aangepast! 😃", "Succes")
 
             toastr.options = {

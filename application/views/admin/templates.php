@@ -74,7 +74,7 @@
 											<a href="<?= site_url('/admin/templates/view/') . $template->id ?>" class="btn btn-success btn-circle btn-sm">
 												<i class="fas fa-external-link-alt"></i>
 											</a>
-											<a href="#" class="btn btn-warning btn-circle btn-sm">
+											<a href="<?= site_url('admin/templates/editTemplate/' . $template->id) ?>" class="btn btn-warning btn-circle btn-sm">
 												<i class="fas fa-edit"></i>
 											</a>
 											<a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal"
@@ -83,6 +83,29 @@
 											</a>
 										</td>
 									</tr>
+
+									<!-- Delete template modal -->
+									<div class="modal fade" id="deleteTemplateModal" tabindex="-1" role="dialog" aria-labelledby="deleteTemplateLabel"
+									     aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="deleteTemplateLabel">Template verwijderen</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<b>Let op!</b>
+													<p>Als je dit template verwijderd kan je hem niet meer terug krijgen!</p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+													<a href="<?= site_url('admin/templates/del/' . $template->id) ?>" class="btn btn-danger">Template verwijderen</a>
+												</div>
+											</div>
+										</div>
+									</div>
 								<?php endforeach; ?>
 								</tbody>
 							</table>
@@ -106,29 +129,6 @@
 <a class="scroll-to-top rounded" href="#page-top">
 	<i class="fas fa-angle-up"></i>
 </a>
-
-<!-- Delete template modal -->
-<div class="modal fade" id="deleteTemplateModal" tabindex="-1" role="dialog" aria-labelledby="deleteTemplateLabel"
-     aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="deleteTemplateLabel">Template verwijderen</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<b>Let op!</b>
-				<p>Als je dit template verwijderd kan je hem niet meer terug krijgen!</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
-				<a href="<?= site_url('admin/templates/del/' . $template->id) ?>" class="btn btn-danger">Template verwijderen</a>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!-- Logout Modal-->
 <?php $this->view('admin/parts/logout_modal'); ?>

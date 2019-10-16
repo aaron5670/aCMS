@@ -36,7 +36,14 @@ class Template extends CI_Model {
 
 		//get all theme templates
 		$themeTemplates = $this->settings_model->getCurrentTheme() . '\templates';
-		return preg_grep('~^tpl_.*\.php$~', scandir($themeTemplates));
+
+		if (is_dir($themeTemplates)){
+			return preg_grep('~^tpl_.*\.php$~', scandir($themeTemplates));
+		}else {
+			return array(
+				'error' => 'Create a in your theme folder a subdirectory called: templates'
+			);
+		}
 	}
 
 	function getUnusedThemeTemplateFiles() {

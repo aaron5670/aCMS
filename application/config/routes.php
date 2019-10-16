@@ -50,9 +50,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-//ToDo: Create dynamic homepage
+/*
+| -------------------------------------------------------------------------
+| aCMS Dynamic Routing
+| -------------------------------------------------------------------------
+| Dynamic Routing from Database
+|
+*/
 
-$route['default_controller'] = 'home';
+require_once (BASEPATH .'database/DB.php');
+$db =& DB();
+
+$query = $db->where('page_status', 'published');
+$query = $db->where('is_homepage', 'false');
+$query = $db->get('acms_routes');
+$result = $query->result();
+
+foreach ($result as $row) {
+	$route[$row->slug] = $row->controller;
+}
+
+$route['translate_uri_dashes'] = true;
+
+/*
+| -------------------------------------------------------------------------
+| aCMS Homepage
+| -------------------------------------------------------------------------
+| Select homepage in CMS
+|
+*/
+$route['default_controller'] = 'pages/homepage';
 $route['translate_uri_dashes'] = false;
 
 /*
@@ -73,24 +100,5 @@ $route['admin/pages/edit/(:num)'] = 'admin/pages/editPage/$1';
 $route['admin/templates/new-template'] = 'admin/templates/newTemplate';
 $route['admin/add/template']['post'] = 'admin/templates/newTemplatePost';
 
-
-/*
-| -------------------------------------------------------------------------
-| aCMS Dynamic Routing
-| -------------------------------------------------------------------------
-| Dynamic Routing from Database
-|
-*/
-
-require_once (BASEPATH .'database/DB.php');
-$db =& DB();
-
-$query = $db->where('page_status', 'published');
-$query = $db->get('acms_routes');
-$result = $query->result();
-
-foreach ($result as $row) {
-	$route[$row->slug] = $row->controller;
-}
-
-$route['translate_uri_dashes'] = true;
+$route['admin/settings'] = 'admin/settings/websiteSettings';
+$route['admin/settings/cms'] = 'admin/settings/cmsSettings';
