@@ -210,6 +210,7 @@
                 submission.pageStatus = $('select#page-status').val();
                 submission.pageID = <?= $pageID ?>;
                 submission.pageTemplateTable = '<?= $pageTemplateTable ?>';
+                submission.isHomepage = '<?= $isHomepage ?>';
 
                 return $.ajax({
                         url: '/admin/edit/page',

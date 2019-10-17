@@ -22,8 +22,6 @@ class Pages extends CI_Controller {
 		$this->site_theme_view = '../../' . $this->current_theme;
 		$this->site_theme_path = $this->current_theme . DIRECTORY_SEPARATOR . 'templates';
 
-//		$templatePath = $this->site_theme_path . DIRECTORY_SEPARATOR . 'templates';
-
 		//if page isn't homepage
 		if ($slug !== '/') :
 			//Get page data
@@ -37,6 +35,7 @@ class Pages extends CI_Controller {
 	//ToDo: pretty error handling if a template isn't found on the server (default template)
 	public function homepage() {
 		$homepageData = $this->page_model->getHomepage();
+		//debug($homepageData);
 		if (file_exists($this->current_theme)) {
 			if ($homepageData) {
 				if (file_exists($this->site_theme_path)) {
@@ -60,7 +59,7 @@ class Pages extends CI_Controller {
 
 	//ToDo: pretty error handling if a template isn't found on the server (default template)
 	public function page() {
-		debug($this->data);
+//		debug($this->data);
 
 		if (file_exists($this->current_theme)) {
 			if (file_exists($this->site_theme_path)) {

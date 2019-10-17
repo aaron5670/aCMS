@@ -92,6 +92,7 @@ class Pages extends CI_Controller {
 		$postData = $this->input->post();
 		if ($postData) :
 			$pageID = $postData['pageID'];
+			$isHomepage = $postData['isHomepage'];
 
 			$this->db->trans_start();
 
@@ -107,7 +108,7 @@ class Pages extends CI_Controller {
 			//Update acms_routes table
 			$data = array(
 				'slug'        => $postData['pageSlug'],
-				'page_status' => $postData['pageStatus'],
+				'page_status' => ($isHomepage) ? 'published' : $postData['pageStatus'],
 				'updated_on'  => date("Y-m-d H:i:s"),
 				'updated_by'  => $_SESSION['user_id'],
 			);
