@@ -156,6 +156,43 @@ class Templates extends CI_Controller {
 		}
 	}
 
+	public function editTemplatePost() {
+
+		if (isset($_POST) && !empty($_POST)) {
+			debug($_POST);
+			$this->load->dbforge();
+
+			$templateID = $this->input->post('templateID');
+			$templateTableName = $this->input->post('templateTableName');
+			$templateJSON = $this->input->post('jsonElement');
+
+			//START DATABASE TRANSACTION
+			$this->db->trans_start();
+
+			//Update 'template_json in database' database table 'acms_templates'
+			$this->db->set('template_json', $templateJSON);
+			$this->db->where('id', $templateID);
+			$this->db->update('acms_templates');
+
+			//Delete all pages with this template
+			$this->db->where('template_id', $templateID);
+			$this->db->delete('acms_pages');
+
+			//DROP current template table (if exits)
+			$this->dbforge->drop_table($templateTableName, TRUE);
+
+			//Create new database table fields
+			$templateJSON = json_decode($templateJSON);
+			$dbFields = $this->formiojs_form_json_to_db_table($templateJSON);
+
+			//Create database table
+			$this->templateTableCreator($dbFields, $templateTableName);
+
+			$this->db->trans_complete();
+			//END DATABASE TRANSACTION
+		}
+	}
+
 	public function del($templateID = null) {
 		if ($templateID) {
 

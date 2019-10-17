@@ -45,22 +45,31 @@
 				<!-- Page Heading -->
 				<h1 class="h3 mb-2 text-gray-800">Template aanpassen</h1>
 				<p class="mb-4">
-					Pas hier een huidig template formulier aan.
+					<span class="alert-danger">
+						<b>Let op:</b>
+						als je een template aanpast worden alle huidige pagina's die dit template gebruiken verwijderd uit de database!
+					</span>
 				</p>
 				<form method="post">
 					<div class="row">
-						<div class="col-lg-3">
+						<div class="col-lg-4">
 							<div class="form-group">
-								<label for="templateName">Template naam</label>
+								<label for="templateName">Template naam <i class="text-danger">(kan niet aangepast
+										worden)</i></label>
 								<input type="text" name="templateName" class="form-control" id="templateName"
-								       value="<?= $template[0]->template_name; ?>" required>
+								       value="<?= $template[0]->template_name; ?>" readonly>
 							</div>
 						</div>
 
-						<div class="col-lg-3">
+						<div class="col-lg-3 offset-lg-5">
 							<div class="form-group">
 								<label for="form-select">Template instellingen</label>
-								<button type="submit" class="form-control btn btn-success">Template opslaan</button>
+								<button type="submit" class="form-control btn btn-outline-danger">Template opslaan
+								</button>
+								<span class="alert-warning">
+						<b>Let op:</b>
+						Zorg voordat je het template opslaat de JSON is geüpdatet
+					</span>
 							</div>
 						</div>
 					</div>
@@ -74,7 +83,9 @@
 					<div class="col-sm-4">
 						<h3 class="text-center text-muted">JSON Schema</h3>
 						<div class="card card-body bg-light jsonviewer">
-							<pre id="json"></pre>
+							<pre id="json">
+								<?= $template[0]->template_json; ?>
+							</pre>
 						</div>
 					</div>
 				</div>
@@ -160,8 +171,6 @@
     };
 
     var onReady = function () {
-        var jsonElement = document.getElementById('json');
-        var formElement = document.getElementById('formio');
         builder.instance.on('saveComponent', onBuild);
         builder.instance.on('editComponent', onBuild);
     };
@@ -169,12 +178,6 @@
     var setDisplay = function (display) {
         builder.setDisplay(display).then(onReady);
     };
-
-    // Handle the form selection.
-    var formSelect = document.getElementById('form-select');
-    formSelect.addEventListener("change", function () {
-        setDisplay(this.value);
-    });
 
     builder.instance.ready.then(onReady);
 
@@ -184,41 +187,41 @@
         var jsonElement = document.getElementById('json');
 
         var data = {
-            templateName: $("input[name='templateName']").val(),
-            templateFile: $("select[name='templateFile']").val(),
+            templateID: <?= $template[0]->id; ?>,
+            templateTableName: '<?= $template[0]->template_table_name; ?>',
             jsonElement: jsonElement.innerHTML,
         };
 
         $.ajax({
-            url: '/admin/add/template',
+            url: '/admin/templates/editTemplatePost',
             type: 'POST',
             data: data,
             error: function (error) {
-                // $('html').html(error);
+                $('html').html(error);
                 console.log(error)
-                toastr["warning"]("Er is iets fout gegaan. Probeer het nog is...", "Oeps");
-
-                toastr.options = {
-                    "closeButton": true,
-                    "debug": false,
-                    "newestOnTop": false,
-                    "progressBar": true,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": false,
-                    "onclick": null,
-                    "showDuration": "2500",
-                    "hideDuration": "1000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                }
+                // toastr["warning"]("Er is iets fout gegaan. Probeer het nog is...", "Oeps");
+                //
+                // toastr.options = {
+                //     "closeButton": true,
+                //     "debug": false,
+                //     "newestOnTop": false,
+                //     "progressBar": true,
+                //     "positionClass": "toast-top-right",
+                //     "preventDuplicates": false,
+                //     "onclick": null,
+                //     "showDuration": "2500",
+                //     "hideDuration": "1000",
+                //     "timeOut": "5000",
+                //     "extendedTimeOut": "1000",
+                //     "showEasing": "swing",
+                //     "hideEasing": "linear",
+                //     "showMethod": "fadeIn",
+                //     "hideMethod": "fadeOut"
+                // }
             },
             success: function (response) {
-                // $('html').html(response);
-                window.location.replace('/admin/templates?message=successfully-added');
+                $('html').html(response);
+                //window.location.replace('/admin/templates?message=successfully-added');
             }
         });
     });
