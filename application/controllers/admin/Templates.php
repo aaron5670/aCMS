@@ -148,8 +148,6 @@ class Templates extends CI_Controller {
 			$data['formioJS_Version'] = $this->formioJS_Version;
 			$data['template'] = $this->template->getRow($templateID);
 
-			debug($data['template']);
-
 			$this->load->view('admin/edit_template', $data);
 		} else {
 			redirect('/admin/templates');
@@ -159,7 +157,6 @@ class Templates extends CI_Controller {
 	public function editTemplatePost() {
 
 		if (isset($_POST) && !empty($_POST)) {
-			debug($_POST);
 			$this->load->dbforge();
 
 			$templateID = $this->input->post('templateID');
