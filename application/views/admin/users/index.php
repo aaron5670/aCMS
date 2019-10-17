@@ -61,12 +61,12 @@
 							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 								<thead>
 								<tr>
-									<th><?php echo lang('index_fname_th'); ?></th>
-									<th><?php echo lang('index_lname_th'); ?></th>
-									<th><?php echo lang('index_email_th'); ?></th>
-									<th><?php echo lang('index_groups_th'); ?></th>
-									<th><?php echo lang('index_status_th'); ?></th>
-									<th><?php echo lang('index_action_th'); ?></th>
+									<th>Voornaam</th>
+									<th>Achternaam</th>
+									<th>E-mail</th>
+									<th>Rol</th>
+									<th>Status</th>
+									<th>Acties</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -77,12 +77,12 @@
 										<td><?php echo htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8'); ?></td>
 										<td>
 											<?php foreach ($user->groups as $group): ?>
-												<?php echo anchor("auth/edit_group/" . $group->id, htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8')); ?>
+												<?php echo anchor("admin/users/editGroup/" . $group->id, htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8')); ?>
 												<br/>
 											<?php endforeach ?>
 										</td>
-										<td><?php echo ($user->active) ? anchor("auth/deactivate/" . $user->id, lang('index_active_link')) : anchor("auth/activate/" . $user->id, lang('index_inactive_link')); ?></td>
-										<td><?php echo anchor("auth/edit_user/" . $user->id, 'Edit'); ?></td>
+										<td><?php echo ($user->active) ? anchor("admin/users/deactivateUser/" . $user->id, lang('index_active_link')) : anchor("admin/users/activateUser/" . $user->id, lang('index_inactive_link')); ?></td>
+										<td><?php echo anchor("admin/users/editUser/" . $user->id, 'Edit'); ?></td>
 									</tr>
 								<?php endforeach; ?>
 								</tbody>
