@@ -53,18 +53,7 @@
 							<div class="form-group">
 								<label for="templateName">Template naam</label>
 								<input type="text" name="templateName" class="form-control" id="templateName"
-								       autofocus
-								       required>
-							</div>
-						</div>
-
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label for="form-select">Template type</label>
-								<select class="form-control" id="form-select">
-									<option value="form">Standaard</option>
-									<option value="wizard">Wizard</option>
-								</select>
+								       value="<?= $template[0]->template_name; ?>" required>
 							</div>
 						</div>
 

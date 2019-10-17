@@ -72,29 +72,62 @@ class Templates extends CI_Controller {
 		$this->db->insert('acms_templates', $data);
 		$this->db->trans_complete();
 
-		$template = json_decode($this->input->post('jsonElement'));
+		$jsonTemplate = json_decode($this->input->post('jsonElement'));
 
+		$dbFields = $this->formiojs_form_json_to_db_table($jsonTemplate);
+
+		$this->templateTableCreator($dbFields, $templateTableName);
+	}
+
+	private function formiojs_form_json_to_db_table($jsonTemplate) {
 		$dbFields = array();
 		$dbFields['page_id'] = array(
 			'type'       => 'INT',
 			'constraint' => 11,
 		);
-		foreach ($template->components as $component) {
+		foreach ($jsonTemplate->components as $component) {
+
 			//if fileupload datatype is BLOB
 			if (isset($component->storage)) :
 				$dbFields[$component->key] = array(
 					'type'    => 'BLOB',
 					'default' => null,
 				);
-			else:
-				$dbFields[$component->key] = array(
-					'type'    => 'TEXT',
-					'default' => null,
-				);
+				continue; //stop foreach loop!
 			endif;
+
+			//if has columns
+			if (isset($component->columns)) :
+				//foreach column
+				foreach ($component->columns as $column) :
+					//foreach column component
+					foreach ($column->components as $columnComponent) :
+
+						//if column has a fileupload  then datatype is BLOB
+						if (isset($component->storage)) :
+							$dbFields[$component->key] = array(
+								'type'    => 'BLOB',
+								'default' => null,
+							);
+							continue; //stop foreach loop!
+						endif;
+
+						$dbFields[$columnComponent->key] = array(
+							'type'    => 'TEXT',
+							'default' => null,
+						);
+					endforeach;
+				endforeach;
+				continue; //stop foreach loop!
+			endif;
+
+			$dbFields[$component->key] = array(
+				'type'    => 'TEXT',
+				'default' => null,
+			);
 		}
 
-		$this->templateTableCreator($dbFields, $templateTableName);
+		return $dbFields;
 	}
 
 	private function templateTableCreator($fields = array(), $templateTableName = null) {
@@ -112,8 +145,10 @@ class Templates extends CI_Controller {
 	public function editTemplate($templateID) {
 		if ($templateID) {
 			$this->load->model('admin/template');
-			$data['template'] = $this->template->getRow($templateID);
 			$data['formioJS_Version'] = $this->formioJS_Version;
+			$data['template'] = $this->template->getRow($templateID);
+
+			debug($data['template']);
 
 			$this->load->view('admin/edit_template', $data);
 		} else {

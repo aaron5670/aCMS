@@ -181,10 +181,26 @@ class Pages extends CI_Controller {
 			//add pageID to the post data array
 			$postData['data']['page_id'] = $pageID;
 
+			//For the formioJS file upload component
 			foreach ($postData['data'] as $key => $data) {
 				if (is_array($data)) {
 					foreach ($data as $sub_data) {
-						$postData['data'][$key] = $sub_data['url'];
+						if (isset($sub_data['url'])) {
+							$postData['data'][$key] = $sub_data['url'];
+						}
+						continue;
+					}
+				}
+			}
+
+			//For the formioJS Edit Grid component
+			foreach ($postData['data'] as $key => $data) {
+				if (is_array($data)) {
+					foreach ($data as $sub_data) {
+						if (!isset($sub_data['url'])) {
+							$postData['data'][$key] = json_encode($data);
+						}
+						continue;
 					}
 				}
 			}
