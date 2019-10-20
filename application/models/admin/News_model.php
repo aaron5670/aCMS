@@ -57,7 +57,7 @@ class News_model extends CI_Model {
 		}
 		$this->db->from($this->newsTable);
 		$this->db->join('acms_templates', 'acms_templates.id = acms_news.template_id');
-		$this->db->join('users', 'acms_news.author = users.id');
+		$this->db->join('users', 'acms_news.updated_by = users.id');
 
 		$query = $this->db->get();
 

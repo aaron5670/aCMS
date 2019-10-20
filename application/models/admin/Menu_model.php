@@ -33,6 +33,15 @@ class Menu_model extends CI_Model {
 		return $query->result();
 	}
 
+	function getMenu() {
+		$this->db->select('acms_menu.*, acms_routes.slug, acms_routes.is_homepage');
+		$this->db->from('acms_menu');
+		$this->db->join('acms_routes', 'acms_routes.page_id = acms_menu.page_id', 'left outer');
+		$this->db->order_by('menu_item_sort_order', 'ASC');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	function delMenuItem($id = null) {
 		if (!$id) return null;
 		$this->db->where('id', $id);

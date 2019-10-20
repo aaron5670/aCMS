@@ -9,8 +9,8 @@ class News extends CI_Controller {
 		$this->load->helper(array('language', 'admin/utility'));
 		$this->lang->load('auth');
 
-		if (!$this->ion_auth->is_admin()) {
-			redirect('auth/login', 'refresh');
+		if (!$this->ion_auth->in_group(array('editor', 'admin'))) {
+			redirect('/auth', 'refresh');
 			exit();
 		}
 	}
@@ -24,6 +24,8 @@ class News extends CI_Controller {
 			'users.first_name',
 			'acms_templates.template_name',
 		));
+
+//		debug($data);
 
 		$this->load->view('admin/news/index', $data);
 	}

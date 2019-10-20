@@ -78,7 +78,7 @@ class Page extends CI_Model {
 		$this->db->from($this->pagesTable);
 		$this->db->join('acms_routes', 'acms_routes.page_id = acms_pages.id');
 		$this->db->join('acms_templates', 'acms_templates.id = acms_pages.template_id');
-		$this->db->join('users', 'acms_pages.author = users.id');
+		$this->db->join('users', 'acms_pages.updated_by = users.id');
 
 		$query = $this->db->get();
 

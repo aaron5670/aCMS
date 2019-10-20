@@ -9,8 +9,8 @@ class Pages extends CI_Controller {
 		$this->load->helper(array('language', 'admin/utility'));
 		$this->lang->load('auth');
 
-		if (!$this->ion_auth->is_admin()) {
-			redirect('auth/login', 'refresh');
+		if (!$this->ion_auth->in_group(array('editor', 'admin'))) {
+			redirect('/auth', 'refresh');
 			exit();
 		}
 	}
@@ -34,8 +34,6 @@ class Pages extends CI_Controller {
 	public function newPage() {
 		$this->load->model('admin/template');
 		$data['templates'] = $this->template->getRows(array('id', 'template_name', 'is_news_template'));
-
-		debug($data);
 
 		$this->load->view('admin/new_page', $data);
 	}

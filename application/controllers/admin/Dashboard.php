@@ -9,8 +9,8 @@ class Dashboard extends CI_Controller {
 		$this->load->helper(array('language'));
 		$this->lang->load('auth');
 
-		if (!$this->ion_auth->is_admin()) {
-			redirect('auth/login', 'refresh');
+		if (!$this->ion_auth->in_group(array('editor', 'admin'))) {
+			redirect('/auth', 'refresh');
 			exit();
 		}
 	}

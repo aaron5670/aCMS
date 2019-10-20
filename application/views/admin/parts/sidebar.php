@@ -22,7 +22,8 @@
 	</div>
 
 	<li class="nav-item <?= active_menu(array('/admin/pages', '/admin/pages/new-page', '/admin/pages?message=success')); ?>">
-		<a class="nav-link <?= active_submenu(array('/admin/pages', '/admin/pages/new-page', '/admin/pages?message=success'), 'collapsed') ?>" href="#"
+		<a class="nav-link <?= active_submenu(array('/admin/pages', '/admin/pages/new-page', '/admin/pages?message=success'), 'collapsed') ?>"
+		   href="#"
 		   data-toggle="collapse" data-target="#collapsePages"
 		   aria-expanded="true" aria-controls="collapsePages">
 			<i class="fas fa-fw fa-folder"></i>
@@ -41,7 +42,8 @@
 	</li>
 
 	<li class="nav-item <?= active_menu(array('/admin/news', '/admin/news/new-news', '/admin/news?message=success')); ?>">
-		<a class="nav-link <?= active_submenu(array('/admin/news', '/admin/news/new-news', '/admin/news?message=success'), 'collapsed') ?>" href="#"
+		<a class="nav-link <?= active_submenu(array('/admin/news', '/admin/news/new-news', '/admin/news?message=success'), 'collapsed') ?>"
+		   href="#"
 		   data-toggle="collapse" data-target="#collapseNews"
 		   aria-expanded="true" aria-controls="collapseNews">
 			<i class="fas fa-fw fa-newspaper"></i>
@@ -73,51 +75,54 @@
 		</a>
 	</li>
 
-	<hr class="sidebar-divider">
+	<?php if ($this->ion_auth->is_admin()) : ?>
+		<hr class="sidebar-divider">
 
-	<div class="sidebar-heading">
-		<sup>a</sup>CMS Beheer
-	</div>
-
-	<li class="nav-item <?= active_menu(array('/admin/users')); ?>">
-		<a class="nav-link" href="<?= site_url('admin/users'); ?>">
-			<i class="fas fa-users"></i>
-			<span>Gebruikers</span>
-		</a>
-	</li>
-
-	<li class="nav-item <?= active_menu(array('/admin/templates', '/admin/templates/new-template')); ?>">
-		<a class="nav-link <?= active_submenu(array('/admin/templates', '/admin/templates/new-template'), 'collapsed') ?>" href="#"
-		   data-toggle="collapse" data-target="#collapseTemplates"
-		   aria-expanded="false" aria-controls="collapseTemplates">
-			<i class="fas fa-palette"></i>
-			<span>Templates</span>
-		</a>
-		<div id="collapseTemplates"
-		     class="collapse <?= active_submenu(array('/admin/templates', '/admin/templates/new-template'), 'show') ?>"
-		     aria-labelledby="headingPages" data-parent="#accordionSidebar">
-			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item <?= active_menu(array('/admin/templates')); ?>"
-				   href="<?= site_url('/admin/templates') ?>">Alle templates</a>
-				<a class="collapse-item <?= active_menu(array('/admin/templates/new-template')); ?>"
-				   href="<?= site_url('/admin/templates/new-template') ?>">Nieuw template</a>
-			</div>
+		<div class="sidebar-heading">
+			<sup>a</sup>CMS Beheer
 		</div>
-	</li>
 
-	<li class="nav-item <?= active_menu(array('/admin/settings/cms')); ?>">
-		<a class="nav-link" href="<?= site_url('admin/settings/cms'); ?>">
-			<i class="fas fa-cogs"></i>
-			<span>aCMS instellingen</span>
-		</a>
-	</li>
+		<li class="nav-item <?= active_menu(array('/admin/users')); ?>">
+			<a class="nav-link" href="<?= site_url('admin/users'); ?>">
+				<i class="fas fa-users"></i>
+				<span>Gebruikers</span>
+			</a>
+		</li>
 
-	<li class="nav-item <?= active_menu(array('/admin/logs')); ?>">
-		<a class="nav-link" href="<?= site_url('admin/logs'); ?>">
-			<i class="fas fa-bug"></i>
-			<span>Log viewer</span>
-		</a>
-	</li>
+		<li class="nav-item <?= active_menu(array('/admin/templates', '/admin/templates/new-template')); ?>">
+			<a class="nav-link <?= active_submenu(array('/admin/templates', '/admin/templates/new-template'), 'collapsed') ?>"
+			   href="#"
+			   data-toggle="collapse" data-target="#collapseTemplates"
+			   aria-expanded="false" aria-controls="collapseTemplates">
+				<i class="fas fa-palette"></i>
+				<span>Templates</span>
+			</a>
+			<div id="collapseTemplates"
+			     class="collapse <?= active_submenu(array('/admin/templates', '/admin/templates/new-template'), 'show') ?>"
+			     aria-labelledby="headingPages" data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="collapse-item <?= active_menu(array('/admin/templates')); ?>"
+					   href="<?= site_url('/admin/templates') ?>">Alle templates</a>
+					<a class="collapse-item <?= active_menu(array('/admin/templates/new-template')); ?>"
+					   href="<?= site_url('/admin/templates/new-template') ?>">Nieuw template</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="nav-item <?= active_menu(array('/admin/settings/cms')); ?>">
+			<a class="nav-link" href="<?= site_url('admin/settings/cms'); ?>">
+				<i class="fas fa-cogs"></i>
+				<span>aCMS instellingen</span>
+			</a>
+		</li>
+
+		<li class="nav-item <?= active_menu(array('/admin/logs')); ?>">
+			<a class="nav-link" href="<?= site_url('admin/logs'); ?>">
+				<i class="fas fa-bug"></i>
+				<span>Log viewer</span>
+			</a>
+		</li>
+	<?php endif; ?>
 
 	<hr class="sidebar-divider d-none d-md-block">
 

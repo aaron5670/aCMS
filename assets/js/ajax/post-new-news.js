@@ -3,13 +3,16 @@ function form() {
         type: 'POST',
         url: '/admin/news/loadNewsTemplate',
         data: {
-            pageTemplate: $('select#template-id').val()
+            newsTemplate: $('select#template-id').val()
         },
         success: function (data) {
+            console.log(data)
+
             Formio.createForm(document.getElementById('contentArea'), JSON.parse(data)).then(function (form) {
                 form.on('submit', (submission) => {
                     submission.newsTitle = $("input#newsTitle").val();
                     submission.templateId = $('select#template-id').val();
+
 
                     return $.ajax({
                         url: '/admin/add/news',
@@ -17,13 +20,13 @@ function form() {
                         data: submission,
                         error: function (error) {
                             console.log(error);
-                            $('html').html(error.responseText)
-                            //window.location.replace('/admin/pages/new-page?message=error');
+                            // $('html').html(error.responseText)
+                            window.location.replace('/admin/news/new-news?message=error');
                         },
                         success: function (data) {
-                            console.log(data)
-                            $('html').html(data)
-                            // window.location.replace('/admin/pages?message=success');
+                            // console.log(data)
+                            // $('html').html(data)
+                            window.location.replace('/admin/news?message=success');
                         }
                     });
                 });

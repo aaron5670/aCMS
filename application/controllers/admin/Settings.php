@@ -8,15 +8,15 @@ class Settings extends CI_Controller {
 		$this->load->library(array('form_validation'));
 		$this->load->helper(array('language'));
 		$this->lang->load('auth');
-
-		if (!$this->ion_auth->is_admin()) {
-			redirect('auth/login', 'refresh');
-			exit();
-		}
 	}
 
 	//Admin website settings
 	public function websiteSettings() {
+		if (!$this->ion_auth->in_group(array('editor', 'admin'))) {
+			redirect('/auth', 'refresh');
+			exit();
+		}
+
 		$this->load->model('admin/settings_model');
 		$allPages = $this->settings_model->getAllRoutes();
 		$data['pages'] = $allPages;
@@ -25,6 +25,11 @@ class Settings extends CI_Controller {
 	}
 
 	public function changeWebsiteSettings() {
+		if (!$this->ion_auth->in_group(array('editor', 'admin'))) {
+			redirect('/auth', 'refresh');
+			exit();
+		}
+
 		$postData = $this->input->post();
 
 		$this->db->trans_start();
@@ -41,6 +46,11 @@ class Settings extends CI_Controller {
 
 	//Super admin CMS settings
 	public function cmsSettings() {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('auth/login', 'refresh');
+			exit();
+		}
+
 		$this->load->model('admin/settings_model');
 		$data['themes'] = $this->settings_model->getThemes();
 		$data['settings'] = $this->settings_model->getSettings();
@@ -49,6 +59,11 @@ class Settings extends CI_Controller {
 	}
 
 	public function changeCMSSettings() {
+		if (!$this->ion_auth->is_admin()) {
+			redirect('auth/login', 'refresh');
+			exit();
+		}
+
 		$postData = $this->input->post();
 
 		$data = array(
