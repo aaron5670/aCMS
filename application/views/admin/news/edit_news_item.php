@@ -5,7 +5,7 @@
 	<?php $this->view('admin/parts/head'); ?>
 
 	<!-- Page title -->
-	<title>aCMS - Pagina aanpassen</title>
+	<title>aCMS - Nieuws item aanpassen</title>
 
 	<!-- Formio.js -->
 	<link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
@@ -32,53 +32,21 @@
 			<!-- End of Topbar -->
 
 			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Pagina aanpassen</h1>
+				<h1 class="h3 mb-2 text-gray-800">Nieuws item aanpassen</h1>
 				<p class="mb-4">
-					Hier kunt u een huidige pagina aanpassen.
+					Hier kunt u een nieuws item aanpassen.
 				</p>
 
 				<div class="row">
 
 					<div class="col-lg-9">
 
-						<input type="hidden" name="pageID" id="pageID" value="<?= $pageID ?>">
+						<input type="hidden" name="newsID" id="newsID" value="<?= $newsID ?>">
 
 						<div class="form-group">
-							<label for="pageTitle">Paginatitel</label>
-							<input type="text" name="page-title" value="<?= $pageTitle; ?>" class="form-control"
-							       id="pageTitle" autofocus>
-						</div>
-
-						<div class="form-group">
-							<?php if ($isHomepage) : ?>
-								<fieldset disabled>
-									<label for="pageSlug">Slug</label>
-									<div class="input-group">
-										<input type="text" name="page-slug" value="<?= base_url(); ?>"
-										       class="form-control form-control-sm"
-										       aria-describedby="pageSlugHelp" id="pageSlug">
-										<div id="feedback"></div>
-									</div>
-									<small id="pageSlugHelp" class="form-text text-muted">
-										Deze pagina is de voorpagina van de website.
-									</small>
-								</fieldset>
-							<?php else: ?>
-								<label for="pageSlug">Slug</label>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<div class="form-control-sm input-group-text form-slug-control"><?= base_url(); ?></div>
-									</div>
-									<input type="text" name="page-slug" value="<?= $pageSlug; ?>"
-									       class="form-control form-control-sm"
-									       aria-describedby="pageSlugHelp" id="pageSlug" onBlur="checkAvailability()">
-									<div id="feedback"></div>
-								</div>
-								<small id="pageSlugHelp" class="form-text text-muted">
-									<i class="fas fa-spinner fa-spin" id="loaderIcon" style="display: none;"></i>
-									De pagina slug (url) moet uniek zijn.
-								</small>
-							<?php endif; ?>
+							<label for="newsTitle">Nieuwstitel</label>
+							<input type="text" name="page-title" value="<?= $newsTitle; ?>" class="form-control"
+							       id="newsTitle" autofocus>
 						</div>
 
 						<div class="card shadow mb-4">
@@ -97,31 +65,12 @@
 							<a href="#pageSettings" class="d-block card-header py-3 collapsed"
 							   data-toggle="collapse" role="button" aria-expanded="false"
 							   aria-controls="pageSettings">
-								<h6 class="m-0 font-weight-bold text-primary">Pagina instellingen</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Nieuws item instellingen</h6>
 							</a>
 							<div class="collapse show" id="pageSettings" style="">
 								<div class="card-body">
-									<?php if (!$isHomepage) : ?>
-										<div class="form-group">
-											<label for="page-status">Pagina status</label>
-											<select class="form-control" id="page-status" name="page-status">
-												<?php if ($pageStatus === 'published') : ?>
-													<option value="published" selected>Publiceren</option>
-													<option value="concept">Concept</option>
-												<?php else: ?>
-													<option value="concept" selected>Concept</option>
-													<option value="published">Publiceren</option>
-												<?php endif; ?>
-											</select>
-										</div>
-									<?php else: ?>
-										<p>
-											<b>Pagina status:</b><br/>
-											Voorpagina
-										</p>
-									<?php endif; ?>
 									<a href="#" class="text-danger" data-toggle="modal"
-									   data-target="#paginaVerwijderenModal">Pagina verwijderen</a>
+									   data-target="#paginaVerwijderenModal">Nieuws item verwijderen</a>
 								</div>
 							</div>
 						</div>
@@ -135,7 +84,7 @@
 							<div id="templateSettings" style="">
 								<div class="card-body">
 									<div class="form-group">
-										<p>Deze pagina gebruikt het template: <b><?= $pageTemplate ?></b></p>
+										<p>Dit nieuws item gebruikt het template: <b><?= $newsTemplate ?></b></p>
 									</div>
 								</div>
 							</div>
@@ -165,18 +114,18 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="paginaVerwijderenLabel">Pagina verwijderen</h5>
+				<h5 class="modal-title" id="paginaVerwijderenLabel">Nieuws item verwijderen</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<b>Let op!</b>
-				<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
+				<p>Als je dit nieuws item verwijderd kan je hem niet meer terug krijgen!</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
-				<a href="<?= site_url('admin/pages/del/' . $pageID) ?>" class="btn btn-danger">Pagina verwijderen</a>
+				<a href="<?= site_url('admin/pages/del/' . $newsID) ?>" class="btn btn-danger">Nieuws item verwijderen</a>
 			</div>
 		</div>
 	</div>
@@ -195,7 +144,7 @@
 <!-- Custom scripts for all pages-->
 <script src="<?= asset_url() ?>js/sb-admin-2.min.js"></script>
 
-<!-- Ajax request for editing a page with the Formio.js form -->
+<!-- Ajax request for editing a news item with the Formio.js form -->
 <script type='text/javascript'>
     window.onload = function () {
 
@@ -204,24 +153,23 @@
         Formio.createForm(document.getElementById('contentArea'), template).then(function (form) {
             form.on('submit', (submission) => {
 
-                submission.pageTitle = $("input#pageTitle").val();
+                submission.newsTitle = $("input#newsTitle").val();
                 submission.pageSlug = $("input#pageSlug").val();
                 // submission.templateId = $('select#template-id').val();
                 submission.pageStatus = $('select#page-status').val();
-                submission.pageID = <?= $pageID ?>;
-                submission.pageTemplateTable = '<?= $pageTemplateTable ?>';
-                submission.isHomepage = '<?= $isHomepage ?>';
+                submission.newsID = <?= $newsID ?>;
+                submission.newsTemplateTable = '<?= $newsTemplateTable ?>';
 
                 return $.ajax({
-                        url: '/admin/edit/page',
+                        url: '/admin/edit/news',
                         type: 'POST',
                         data: submission,
                         error: function (error) {
-                            //console.log(error);
-                            window.location.replace('/admin/pages/edit/<?= $pageID ?>?message=error');
+                            console.log(error);
+                            window.location.replace('/admin/news/edit/<?= $newsID ?>?message=error');
                         },
                         success: function (data) {
-                            window.location.replace('/admin/pages/edit/<?= $pageID ?>?message=success');
+                            window.location.replace('/admin/news/edit/<?= $newsID ?>?message=success');
                         }
                     }
                 );

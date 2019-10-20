@@ -74,7 +74,7 @@
 								</div>
 							</div>
 
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="templateFile">
 										Template bestand
@@ -89,12 +89,22 @@
 								</div>
 							</div>
 
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="form-select">Template type</label>
 									<select class="form-control" id="form-select">
 										<option value="form">Standaard</option>
 										<option value="wizard">Wizard</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-lg-2">
+								<div class="form-group">
+									<label for="isNewsTemplate">Is nieuws item template</label>
+									<select class="form-control" id="isNewsTemplate" name="isNewsTemplate">
+										<option value="false">Nee</option>
+										<option value="true">Ja</option>
 									</select>
 								</div>
 							</div>

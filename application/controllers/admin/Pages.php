@@ -13,9 +13,6 @@ class Pages extends CI_Controller {
 			redirect('auth/login', 'refresh');
 			exit();
 		}
-
-		active_menu(array('/admin/pages', '/admin/new-page'));
-
 	}
 
 	public function index() {
@@ -36,7 +33,9 @@ class Pages extends CI_Controller {
 
 	public function newPage() {
 		$this->load->model('admin/template');
-		$data['templates'] = $this->template->getRows(array('id', 'template_name'));
+		$data['templates'] = $this->template->getRows(array('id', 'template_name', 'is_news_template'));
+
+		debug($data);
 
 		$this->load->view('admin/new_page', $data);
 	}

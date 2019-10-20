@@ -134,7 +134,6 @@ class Page extends CI_Model {
 		if (!$id) return null;
 
 		$this->db->where('template_id', $id);
-
 		$query = $this->db->get($this->pagesTable);
 		return $query->result();
 	}

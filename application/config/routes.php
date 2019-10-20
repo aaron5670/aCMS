@@ -91,11 +91,15 @@ $route['translate_uri_dashes'] = false;
 */
 $route['admin'] = 'admin/dashboard';
 
-$route['admin/pages'] = 'admin/pages';
 $route['admin/pages/new-page'] = 'admin/pages/newPage';
 $route['admin/add/page']['post'] = 'admin/pages/newPagePost';
 $route['admin/edit/page']['post'] = 'admin/pages/editPagePost';
 $route['admin/pages/edit/(:num)'] = 'admin/pages/editPage/$1';
+
+$route['admin/news/new-news'] = 'admin/news/newNews';
+$route['admin/add/news']['post'] = 'admin/news/newNewsPost';
+$route['admin/edit/news']['post'] = 'admin/news/editNewsPost';
+$route['admin/news/edit/(:num)'] = 'admin/news/editNews/$1';
 
 $route['admin/templates/new-template'] = 'admin/templates/newTemplate';
 $route['admin/add/template']['post'] = 'admin/templates/newTemplatePost';

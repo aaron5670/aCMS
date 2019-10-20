@@ -21,12 +21,6 @@
 		Website beheer
 	</div>
 
-	<?php
-	$urlArray = array(
-		'/admin/pages',
-		'/admin/new-page',
-	)
-	?>
 	<li class="nav-item <?= active_menu(array('/admin/pages', '/admin/pages/new-page', '/admin/pages?message=success')); ?>">
 		<a class="nav-link <?= active_submenu(array('/admin/pages', '/admin/pages/new-page', '/admin/pages?message=success'), 'collapsed') ?>" href="#"
 		   data-toggle="collapse" data-target="#collapsePages"
@@ -42,6 +36,25 @@
 				   href="<?= site_url('/admin/pages') ?>">Alle pagina's</a>
 				<a class="collapse-item <?= active_menu(array('/admin/pages/new-page')); ?>"
 				   href="<?= site_url('/admin/pages/new-page') ?>">Nieuwe pagina</a>
+			</div>
+		</div>
+	</li>
+
+	<li class="nav-item <?= active_menu(array('/admin/news', '/admin/news/new-news', '/admin/news?message=success')); ?>">
+		<a class="nav-link <?= active_submenu(array('/admin/news', '/admin/news/new-news', '/admin/news?message=success'), 'collapsed') ?>" href="#"
+		   data-toggle="collapse" data-target="#collapseNews"
+		   aria-expanded="true" aria-controls="collapseNews">
+			<i class="fas fa-fw fa-newspaper"></i>
+			<span>Nieuws</span>
+		</a>
+		<div id="collapseNews"
+		     class="collapse <?= active_submenu(array('/admin/news', '/admin/news/new-news', '/admin/news?message=success'), 'show') ?>"
+		     aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item <?= active_menu(array('/admin/news', '/admin/news?message=success')); ?>"
+				   href="<?= site_url('/admin/news') ?>">Alle nieuws items</a>
+				<a class="collapse-item <?= active_menu(array('/admin/news/new-news')); ?>"
+				   href="<?= site_url('/admin/news/new-news') ?>">Nieuw nieuws item</a>
 			</div>
 		</div>
 	</li>

@@ -46,16 +46,17 @@ $('form').submit(function (e) {
     var jsonElement = document.getElementById('json');
 
     var data = {
-        templateName : $("input[name='templateName']").val(),
-        templateFile : $("select[name='templateFile']").val(),
-        jsonElement : jsonElement.innerHTML,
+        templateName: $("input[name='templateName']").val(),
+        templateFile: $("select[name='templateFile']").val(),
+        isNewsTemplate: $("select[name='isNewsTemplate']").val(),
+        jsonElement: jsonElement.innerHTML,
     };
 
     $.ajax({
         url: '/admin/add/template',
         type: 'POST',
         data: data,
-        error: function(error) {
+        error: function (error) {
             // $('html').html(error);
             console.log(error)
             toastr["warning"]("Er is iets fout gegaan. Probeer het nog is...", "Oeps");
@@ -78,7 +79,7 @@ $('form').submit(function (e) {
                 "hideMethod": "fadeOut"
             }
         },
-        success: function(response) {
+        success: function (response) {
             // $('html').html(response);
             window.location.replace('/admin/templates?message=successfully-added');
         }

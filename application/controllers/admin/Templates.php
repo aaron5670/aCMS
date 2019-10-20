@@ -58,33 +58,50 @@ class Templates extends CI_Controller {
 	public function newTemplatePost() {
 		$templateName = $this->input->post('templateName');
 		$templateFile = $this->input->post('templateFile');
+		$isNewsTemplate = $this->input->post('isNewsTemplate');
 
 		$templateTableName = 'acms_tpl_' . (strtolower(str_replace(' ', '_', $templateName)));
 
+		$this->db->trans_start();
 		$data = array(
 			'template_name'       => $templateName,
 			'template_table_name' => $templateTableName,
 			'template_file_name'  => $templateFile,
+			'is_news_template'    => false,
 			'template_json'       => $this->input->post('jsonElement'),
 			'last_updated'        => date("Y-m-d H:i:s"),
 		);
-		$this->db->trans_start();
+
+		if ($isNewsTemplate === "true") {
+			$data['is_news_template'] = true;
+		}
+
 		$this->db->insert('acms_templates', $data);
 		$this->db->trans_complete();
 
 		$jsonTemplate = json_decode($this->input->post('jsonElement'));
 
-		$dbFields = $this->formiojs_form_json_to_db_table($jsonTemplate);
+		$dbFields = $this->formiojs_form_json_to_db_table($jsonTemplate, $isNewsTemplate);
 
-		$this->templateTableCreator($dbFields, $templateTableName);
+		$this->templateTableCreator($dbFields, $templateTableName, $isNewsTemplate);
 	}
 
-	private function formiojs_form_json_to_db_table($jsonTemplate) {
+	private function formiojs_form_json_to_db_table($jsonTemplate, $isNewsTemplate) {
 		$dbFields = array();
-		$dbFields['page_id'] = array(
-			'type'       => 'INT',
-			'constraint' => 11,
-		);
+
+		//Check if news or page template
+		if ($isNewsTemplate === "true") {
+			$dbFields['news_id'] = array(
+				'type'       => 'INT',
+				'constraint' => 11,
+			);
+		} else {
+			$dbFields['page_id'] = array(
+				'type'       => 'INT',
+				'constraint' => 11,
+			);
+		}
+
 		foreach ($jsonTemplate->components as $component) {
 
 			//if fileupload datatype is BLOB
@@ -130,13 +147,25 @@ class Templates extends CI_Controller {
 		return $dbFields;
 	}
 
-	private function templateTableCreator($fields = array(), $templateTableName = null) {
+	private function templateTableCreator($fields = array(), $templateTableName, $isNewsTemplate) {
 		$this->load->dbforge();
-		$this->dbforge->add_key('page_id');
+
+		//Check if news or page template
+		if ($isNewsTemplate === "true") {
+			$this->dbforge->add_key('news_id');
+		} else {
+			$this->dbforge->add_key('page_id');
+		}
+
 		$this->dbforge->add_field('id');
 		$this->dbforge->add_field($fields);
 
-		$this->dbforge->add_field('CONSTRAINT FOREIGN KEY (page_id) REFERENCES acms_pages(id) ON DELETE CASCADE ON UPDATE CASCADE');
+		//Check if news or page template
+		if ($isNewsTemplate === "true") {
+			$this->dbforge->add_field('CONSTRAINT FOREIGN KEY (news_id) REFERENCES acms_news(id) ON DELETE CASCADE ON UPDATE CASCADE');
+		} else {
+			$this->dbforge->add_field('CONSTRAINT FOREIGN KEY (page_id) REFERENCES acms_pages(id) ON DELETE CASCADE ON UPDATE CASCADE');
+		}
 
 		$this->dbforge->create_table($templateTableName, true);
 	}
@@ -176,14 +205,14 @@ class Templates extends CI_Controller {
 			$this->db->delete('acms_pages');
 
 			//DROP current template table (if exits)
-			$this->dbforge->drop_table($templateTableName, TRUE);
+			$this->dbforge->drop_table($templateTableName, true);
 
 			//Create new database table fields
 			$templateJSON = json_decode($templateJSON);
-			$dbFields = $this->formiojs_form_json_to_db_table($templateJSON);
+			$dbFields = $this->formiojs_form_json_to_db_table($templateJSON, $isNewsTemplate);
 
 			//Create database table
-			$this->templateTableCreator($dbFields, $templateTableName);
+			$this->templateTableCreator($dbFields, $templateTableName, $isNewsTemplate);
 
 			$this->db->trans_complete();
 			//END DATABASE TRANSACTION
@@ -192,13 +221,12 @@ class Templates extends CI_Controller {
 
 	public function del($templateID = null) {
 		if ($templateID) {
-
-			$this->load->model('admin/page');
-			if ($this->page->checkIfPageWithTemplateExist($templateID)) {
-				redirect('/admin/templates?message=some-pages-uses-this-template');
-				exit();
-			}
-
+//			$this->load->model('admin/page');
+//			$this->load->model('admin/news_model');
+//			if ($this->page->checkIfPageWithTemplateExist($templateID) || $this->news_model->checkIfNewsWithTemplateExist($templateID)) {
+//				redirect('/admin/templates?message=some-pages-or-news-uses-this-template');
+//				exit();
+//			}
 			$this->load->model('admin/template');
 			$this->template->delRow($templateID);
 			redirect('/admin/templates?message=successfully-deleted');

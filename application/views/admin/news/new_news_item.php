@@ -5,7 +5,7 @@
 	<?php $this->view('admin/parts/head'); ?>
 
 	<!-- Page title -->
-	<title>aCMS - Pagina aanmaken</title>
+	<title>aCMS - Nieuws item aanmaken</title>
 
 	<!-- Formio.js -->
 	<link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
@@ -32,9 +32,9 @@
 			<!-- End of Topbar -->
 
 			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Nieuwe pagina aanmaken</h1>
+				<h1 class="h3 mb-2 text-gray-800">Nieuws item aanmaken</h1>
 				<p class="mb-4">
-					Hier kunt u een nieuwe pagina aanmaken voor uw website.
+					Hier kunt u een nieuws item aanmaken voor uw website.
 				</p>
 
 				<div class="row">
@@ -42,24 +42,8 @@
 					<div class="col-lg-9">
 
 						<div class="form-group">
-							<label for="pageTitle">Paginatitel</label>
-							<input type="text" name="page-title" class="form-control" id="pageTitle" autofocus>
-						</div>
-
-						<div class="form-group">
-							<label for="pageSlug">Slug</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="form-control-sm input-group-text form-slug-control font-weight-bold"><?= base_url(); ?></div>
-								</div>
-								<input type="text" name="page-slug" class="form-control form-control-sm"
-								       aria-describedby="pageSlugHelp" id="pageSlug" onBlur="checkAvailability()">
-								<div id="feedback"></div>
-							</div>
-							<small id="pageSlugHelp" class="form-text text-muted">
-								<i class="fas fa-spinner fa-spin" id="loaderIcon" style="display: none;"></i>
-								De pagina slug (url) moet uniek zijn.
-							</small>
+							<label for="newsTitle">Nieuwstitel</label>
+							<input type="text" name="page-title" class="form-control" id="newsTitle" autofocus>
 						</div>
 
 						<div class="card shadow mb-4">
@@ -75,25 +59,6 @@
 
 					<div class="col-lg-3">
 						<div class="card shadow mb-4">
-							<a href="#pageSettings" class="d-block card-header py-3 collapsed"
-							   data-toggle="collapse" role="button" aria-expanded="false"
-							   aria-controls="pageSettings">
-								<h6 class="m-0 font-weight-bold text-primary">Pagina instellingen</h6>
-							</a>
-							<div class="collapse show" id="pageSettings" style="">
-								<div class="card-body">
-									<div class="form-group">
-										<label for="page-status">Pagina status</label>
-										<select class="form-control" id="page-status" name="page-status">
-											<option value="published" selected>Publiceren</option>
-											<option value="concept">Concept</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="card shadow mb-4">
 							<a href="#templateSettings" class="d-block card-header py-3"
 							   data-toggle="collapse" role="button" aria-expanded="false"
 							   aria-controls="templateSettings">
@@ -105,13 +70,12 @@
 										<?php if (!$templates): ?>
 											<p><i>Geen templates beschikbaar.</i></p>
 										<?php else: ?>
-											<label for="template-id">Pagina template</label>
+											<label for="template-id">Nieuws template</label>
 											<select class="form-control" id="template-id" name="template-id">
 												<?php foreach ($templates as $template):
-													if (!$template->is_news_template) : ?>
+													if ($template->is_news_template) : ?>
 														<option value="<?= $template->id ?>"
 														        selected><?= $template->template_name ?></option>
-
 													<?php endif;
 												endforeach; ?>
 											</select>
@@ -153,16 +117,13 @@
 <script src="<?= asset_url() ?>js/sb-admin-2.min.js"></script>
 
 <!-- Ajax post request for new page with the Formio.js form -->
-<script src="<?= asset_url() ?>js/ajax/post-new-page.js"></script>
+<script src="<?= asset_url() ?>js/ajax/post-new-news.js"></script>
 
 <!-- Toastr-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <!--Toastr success and error notifications-->
 <script src="<?= asset_url() ?>js/toastr-page-edited.js"></script>
-
-<!--Page slug input spacebar to dash (-) converter & slug availability checker -->
-<script src="<?= asset_url() ?>js/ajax/slug-availability-checker.js"></script>
 
 </body>
 </html>
