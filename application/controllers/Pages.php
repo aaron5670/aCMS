@@ -12,7 +12,7 @@ class Pages extends CI_Controller {
 		parent::__construct();
 
 		//load page model
-		$this->load->model(array('page_model', 'admin/settings_model', 'admin/menu_model'));
+		$this->load->model(array('page_model', 'admin/settings_model', 'admin/menu_model', 'admin/settings_model'));
 
 		//get slug without the first slash
 		$slug = $_SERVER['REQUEST_URI'];
@@ -27,7 +27,8 @@ class Pages extends CI_Controller {
 		if ($slug !== '/') :
 			//Get page data
 			$this->data = $this->page_model->getPageData($slug);
-			$this->data->MenuItems = $this->menu;
+			$this->data->_MenuItems = $this->menu;
+			$this->data->_SiteTitle = $this->settings_model->getSiteTitle();
 
 			//get site theme and set path location
 			$this->page_template = $this->data->template_file_name;
@@ -43,7 +44,8 @@ class Pages extends CI_Controller {
 				if (file_exists($this->site_theme_path)) {
 					if (file_exists($this->site_theme_path . DIRECTORY_SEPARATOR . $homepageData->template_file_name)) {
 
-						$homepageData->MenuItems = $this->menu;
+						$homepageData->_MenuItems = $this->menu;
+						$homepageData->_SiteTitle = $this->settings_model->getSiteTitle();
 
 						$this->load->view($this->site_theme_view . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $homepageData->template_file_name, $homepageData);
 					} else {

@@ -21,6 +21,14 @@ class Settings_model extends CI_Model {
 		return $query->row();
 	}
 
+	function getSiteTitle() {
+		$this->db->select('site_title');
+		$query = $this->db->get('acms_settings');
+		$result = $query->row();
+
+		return $result->site_title;
+	}
+
 	function getThemes() {
 		return array_filter(glob('themes\*'), 'is_dir');
 	}
