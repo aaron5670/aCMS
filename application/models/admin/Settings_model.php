@@ -30,7 +30,7 @@ class Settings_model extends CI_Model {
 	}
 
 	function getThemes() {
-		return array_filter(glob('themes\*'), 'is_dir');
+		return array_filter(glob('themes' . DIRECTORY_SEPARATOR . '*'), 'is_dir');
 	}
 
 	function getCurrentTheme() {

@@ -35,7 +35,7 @@ class Template extends CI_Model {
 		$this->load->model('admin/settings_model');
 
 		//get all theme templates
-		$themeTemplates = $this->settings_model->getCurrentTheme() . '\templates';
+		$themeTemplates = $this->settings_model->getCurrentTheme() . DIRECTORY_SEPARATOR . 'templates';
 
 		if (is_dir($themeTemplates)){
 			return preg_grep('~^tpl_.*\.php$~', scandir($themeTemplates));

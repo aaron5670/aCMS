@@ -190,6 +190,7 @@
             templateID: <?= $template[0]->id; ?>,
             templateTableName: '<?= $template[0]->template_table_name; ?>',
             jsonElement: jsonElement.innerHTML,
+            isNewsTemplate: '<?= $template[0]->is_news_template; ?>',
         };
 
         $.ajax({
@@ -220,8 +221,8 @@
                 }
             },
             success: function (response) {
-                // $('html').html(response);
-                window.location.replace('/admin/templates?message=successfully-added');
+                $('html').html(response);
+                // window.location.replace('/admin/templates?message=successfully-added');
             }
         });
     });

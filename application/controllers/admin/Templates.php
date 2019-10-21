@@ -89,8 +89,10 @@ class Templates extends CI_Controller {
 	private function formiojs_form_json_to_db_table($jsonTemplate, $isNewsTemplate) {
 		$dbFields = array();
 
+		$isNewsTemplate = filter_var($isNewsTemplate, FILTER_VALIDATE_BOOLEAN);
+
 		//Check if news or page template
-		if ($isNewsTemplate === "true") {
+		if ($isNewsTemplate === true) {
 			$dbFields['news_id'] = array(
 				'type'       => 'INT',
 				'constraint' => 11,
@@ -150,8 +152,10 @@ class Templates extends CI_Controller {
 	private function templateTableCreator($fields = array(), $templateTableName, $isNewsTemplate) {
 		$this->load->dbforge();
 
+		$isNewsTemplate = filter_var($isNewsTemplate, FILTER_VALIDATE_BOOLEAN);
+
 		//Check if news or page template
-		if ($isNewsTemplate === "true") {
+		if ($isNewsTemplate === true) {
 			$this->dbforge->add_key('news_id');
 		} else {
 			$this->dbforge->add_key('page_id');
@@ -161,7 +165,7 @@ class Templates extends CI_Controller {
 		$this->dbforge->add_field($fields);
 
 		//Check if news or page template
-		if ($isNewsTemplate === "true") {
+		if ($isNewsTemplate === true) {
 			$this->dbforge->add_field('CONSTRAINT FOREIGN KEY (news_id) REFERENCES acms_news(id) ON DELETE CASCADE ON UPDATE CASCADE');
 		} else {
 			$this->dbforge->add_field('CONSTRAINT FOREIGN KEY (page_id) REFERENCES acms_pages(id) ON DELETE CASCADE ON UPDATE CASCADE');
@@ -177,6 +181,8 @@ class Templates extends CI_Controller {
 			$data['formioJS_Version'] = $this->formioJS_Version;
 			$data['template'] = $this->template->getRow($templateID);
 
+			debug($data);
+
 			$this->load->view('admin/edit_template', $data);
 		} else {
 			redirect('/admin/templates');
@@ -191,6 +197,10 @@ class Templates extends CI_Controller {
 			$templateID = $this->input->post('templateID');
 			$templateTableName = $this->input->post('templateTableName');
 			$templateJSON = $this->input->post('jsonElement');
+			$isNewsTemplate = $this->input->post('isNewsTemplate');
+
+			echo '<pre>';
+			var_dump($_POST);
 
 			//START DATABASE TRANSACTION
 			$this->db->trans_start();

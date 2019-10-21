@@ -84,6 +84,5 @@ class Pages extends CI_Controller {
 		} else {
 			echo 'Error theme: <b>' . $this->current_theme . '</b> not found';
 		}
-
 	}
 }

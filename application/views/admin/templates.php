@@ -78,14 +78,14 @@
 												<i class="fas fa-edit"></i>
 											</a>
 											<a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal"
-											   data-target="#deleteTemplateModal">
+											   data-target="#deleteTemplateModal-<?= $template->id; ?>">
 												<i class="fas fa-trash-alt"></i>
 											</a>
 										</td>
 									</tr>
 
 									<!-- Delete template modal -->
-									<div class="modal fade" id="deleteTemplateModal" tabindex="-1" role="dialog" aria-labelledby="deleteTemplateLabel"
+									<div class="modal fade" id="deleteTemplateModal-<?= $template->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteTemplateLabel"
 									     aria-hidden="true">
 										<div class="modal-dialog modal-dialog-centered" role="document">
 											<div class="modal-content">
