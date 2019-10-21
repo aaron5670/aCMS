@@ -231,12 +231,12 @@ class Templates extends CI_Controller {
 
 	public function del($templateID = null) {
 		if ($templateID) {
-//			$this->load->model('admin/page');
-//			$this->load->model('admin/news_model');
-//			if ($this->page->checkIfPageWithTemplateExist($templateID) || $this->news_model->checkIfNewsWithTemplateExist($templateID)) {
-//				redirect('/admin/templates?message=some-pages-or-news-uses-this-template');
-//				exit();
-//			}
+			$this->load->model('admin/page');
+			$this->load->model('admin/news_model');
+			if ($this->page->checkIfPageWithTemplateExist($templateID) || $this->news_model->checkIfNewsWithTemplateExist($templateID)) {
+				redirect('/admin/templates?message=some-pages-or-news-uses-this-template');
+				exit();
+			}
 			$this->load->model('admin/template');
 			$this->template->delRow($templateID);
 			redirect('/admin/templates?message=successfully-deleted');
