@@ -51,16 +51,18 @@
 				<?php if (!$unusedTemplates) : ?>
 					<b>Maak eerst een nieuw template bestand aan!</b>
 					<p>
-						Zorg ervoor dat er een nieuw template bestand wordt aangemaakt in <b><?= FCPATH . $siteTheme->site_theme . '\\templates' ?></b>.
-						<br />
+						Zorg ervoor dat er een nieuw template bestand wordt aangemaakt in
+						<b><?= FCPATH . $siteTheme->site_theme . DIRECTORY_SEPARATOR . 'templates' ?></b>.
+						<br/>
 						Dit bestand moet beginnen met: <b>tpl_</b>
-						<br /><br />
+						<br/><br/>
 						Voorbeeld: <b>tpl_contact.php</b>
 					</p>
-				<?php elseif(isset($unusedTemplates['error'])): ?>
+				<?php elseif (isset($unusedTemplates['error'])): ?>
 					<b>Maak eerst een template directory aan in de huidige themes directory!</b>
 					<p>
-						Zorg ervoor dat dit je templates path wordt: <b><?= FCPATH . $siteTheme->site_theme . '\\templates' ?></b>.
+						Zorg ervoor dat dit je templates path wordt:
+						<b><?= FCPATH . $siteTheme->site_theme . DIRECTORY_SEPARATOR . 'templates' ?></b>.
 					</p>
 				<?php else: ?>
 					<form method="post">

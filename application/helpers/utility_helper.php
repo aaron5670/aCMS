@@ -8,6 +8,13 @@ function asset_url() {
 }
 
 /*
+ * Get base url of the assets directory
+ */
+function theme_directory() {
+	return base_url() . 'themes/backcorner/';
+}
+
+/*
  * Check if string is JSON
  */
 function isJson($string) {

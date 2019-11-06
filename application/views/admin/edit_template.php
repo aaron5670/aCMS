@@ -221,8 +221,8 @@
                 }
             },
             success: function (response) {
-                $('html').html(response);
-                // window.location.replace('/admin/templates?message=successfully-added');
+                // $('html').html(response);
+                window.location.replace('/admin/templates?message=successfully-added');
             }
         });
     });

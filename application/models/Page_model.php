@@ -68,7 +68,7 @@ class Page_model extends CI_Model {
 	function getPageData($slug) {
 
 		//transform slug without the first slash
-		$slug = trim($_SERVER['REQUEST_URI'], '/');
+		$slug = trim($_SERVER['PATH_INFO'], '/');
 
 		//Array with all the database columns
 		$tableColumns = array(

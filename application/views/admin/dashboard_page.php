@@ -35,7 +35,8 @@
 					<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 					<a href="<?= site_url(); ?>" target="_blank"
 					   class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-						<i class="fas fa-external-link-alt fa-sm text-white-50"></i> Bekijk website</a>
+						<i class="fas fa-external-link-alt fa-sm text-white-50"></i> Bekijk website
+					</a>
 				</div>
 
 				<!-- Content Row -->
@@ -64,7 +65,7 @@
 							</div>
 							<div class="card-body">
 								<p>
-									Binnenkort leest u hier het laatste nieuws & updates over aCMS.
+									Er is op dit moment nieuws of belangrijke updates.
 								</p>
 							</div>
 						</div>

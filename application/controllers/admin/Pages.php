@@ -90,6 +90,8 @@ class Pages extends CI_Controller {
 		if ($postData) :
 			$pageID = $postData['pageID'];
 			$isHomepage = $postData['isHomepage'];
+			$slug = rawurlencode(strtolower($postData['pageSlug']));
+
 
 			$this->db->trans_start();
 
@@ -104,13 +106,37 @@ class Pages extends CI_Controller {
 
 			//Update acms_routes table
 			$data = array(
-				'slug'        => $postData['pageSlug'],
+				'slug'        => $slug,
 				'page_status' => ($isHomepage) ? 'published' : $postData['pageStatus'],
 				'updated_on'  => date("Y-m-d H:i:s"),
 				'updated_by'  => $_SESSION['user_id'],
 			);
 			$this->db->where('page_id', $pageID);
 			$this->db->update('acms_routes', $data);
+
+			//For the formioJS file upload component
+			foreach ($postData['data'] as $key => $data) {
+				if (is_array($data)) {
+					foreach ($data as $sub_data) {
+						if (isset($sub_data['url'])) {
+							$postData['data'][$key] = $sub_data['url'];
+						}
+						continue;
+					}
+				}
+			}
+
+			//For the formioJS Edit Grid component
+			foreach ($postData['data'] as $key => $data) {
+				if (is_array($data)) {
+					foreach ($data as $sub_data) {
+						if (!isset($sub_data['url'])) {
+							$postData['data'][$key] = json_encode($data);
+						}
+						continue;
+					}
+				}
+			}
 
 			//Update template table with page data
 			$this->db->where('page_id', $pageID);
@@ -140,7 +166,7 @@ class Pages extends CI_Controller {
 
 		if ($this->input->post()) :
 			$postData = $this->input->post();
-			$slug = rawurlencode($postData['pageSlug']);
+			$slug = rawurlencode(strtolower($postData['pageSlug']));
 
 			//start transaction
 			$this->db->trans_start();

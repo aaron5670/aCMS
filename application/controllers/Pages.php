@@ -15,7 +15,11 @@ class Pages extends CI_Controller {
 		$this->load->model(array('page_model', 'admin/settings_model', 'admin/menu_model', 'admin/settings_model'));
 
 		//get slug without the first slash
-		$slug = $_SERVER['REQUEST_URI'];
+		if (isset($_SERVER['PATH_INFO'])) {
+			$slug = $_SERVER['PATH_INFO'];
+		} else {
+			$slug = '/';
+		}
 
 		//get site theme and set path location
 		$this->current_theme = $this->settings_model->getCurrentTheme();
@@ -38,7 +42,9 @@ class Pages extends CI_Controller {
 	//ToDo: pretty error handling if a template isn't found on the server (default template)
 	public function homepage() {
 		$homepageData = $this->page_model->getHomepage();
+
 		//debug($homepageData);
+
 		if (file_exists($this->current_theme)) {
 			if ($homepageData) {
 				if (file_exists($this->site_theme_path)) {
@@ -57,7 +63,7 @@ class Pages extends CI_Controller {
 					exit;
 				}
 			} else {
-				echo 'Geen homepagina gevonden';
+				show_404('ERROR: Homepage not found!');
 			}
 		} else {
 			echo 'Error theme: <b>' . $this->current_theme . '</b> not found';

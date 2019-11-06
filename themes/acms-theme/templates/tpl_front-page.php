@@ -1,3 +1,5 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
 <html lang="en">
 <head>
 	<title><?= $_SiteTitle ?> - <?= $page_title ?></title>

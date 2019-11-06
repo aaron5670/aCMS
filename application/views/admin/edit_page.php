@@ -8,8 +8,8 @@
 	<title>aCMS - Pagina aanpassen</title>
 
 	<!-- Formio.js -->
-	<link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
-	<script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
+	<link rel='stylesheet' href='https://unpkg.com/formiojs@4.4.2/dist/formio.full.min.css'>
+	<script src='https://unpkg.com/formiojs@4.4.2/dist/formio.full.min.js'></script>
 
 	<!-- Toastr -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
@@ -35,6 +35,12 @@
 				<h1 class="h3 mb-2 text-gray-800">Pagina aanpassen</h1>
 				<p class="mb-4">
 					Hier kunt u een huidige pagina aanpassen.
+					<?php if ($pageStatus === 'published') : ?>
+					<a href="<?= site_url($isHomepage ? '' : $pageSlug); ?>" target="_blank"
+					   class="btn btn-sm btn-primary shadow-sm float-right">
+						<i class="fas fa-external-link-alt fa-sm text-white-50"></i> Bekijk huidige pagina
+					</a>
+					<?php endif; ?>
 				</p>
 
 				<div class="row">
@@ -217,8 +223,9 @@
                         type: 'POST',
                         data: submission,
                         error: function (error) {
-                            //console.log(error);
-                            window.location.replace('/admin/pages/edit/<?= $pageID ?>?message=error');
+                            console.log(error);
+                            $('html').html(error.responseText);
+                            //window.location.replace('/admin/pages/edit/<?//= $pageID ?>//?message=error');
                         },
                         success: function (data) {
                             window.location.replace('/admin/pages/edit/<?= $pageID ?>?message=success');

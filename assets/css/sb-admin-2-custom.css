@@ -5,3 +5,18 @@ sup {
 .form-slug-control {
     font-size: 14px;
 }
+
+div#contentArea div[ref="component"] {
+    display: inline-block !important;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.w-33 {
+    width: 33% !important;
+}
+
+.w-49 {
+    width: 45% !important;
+    margin-left: 25px;
+}

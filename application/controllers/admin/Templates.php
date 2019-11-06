@@ -109,7 +109,7 @@ class Templates extends CI_Controller {
 			//if fileupload datatype is BLOB
 			if (isset($component->storage)) :
 				$dbFields[$component->key] = array(
-					'type'    => 'BLOB',
+					'type'    => 'LONGBLOB',
 					'default' => null,
 				);
 				continue; //stop foreach loop!
@@ -125,7 +125,7 @@ class Templates extends CI_Controller {
 						//if column has a fileupload  then datatype is BLOB
 						if (isset($component->storage)) :
 							$dbFields[$component->key] = array(
-								'type'    => 'BLOB',
+								'type'    => 'LONGBLOB',
 								'default' => null,
 							);
 							continue; //stop foreach loop!
@@ -149,7 +149,7 @@ class Templates extends CI_Controller {
 		return $dbFields;
 	}
 
-	private function templateTableCreator($fields = array(), $templateTableName, $isNewsTemplate) {
+	private function templateTableCreator($fields, $templateTableName, $isNewsTemplate) {
 		$this->load->dbforge();
 
 		$isNewsTemplate = filter_var($isNewsTemplate, FILTER_VALIDATE_BOOLEAN);
@@ -181,8 +181,6 @@ class Templates extends CI_Controller {
 			$data['formioJS_Version'] = $this->formioJS_Version;
 			$data['template'] = $this->template->getRow($templateID);
 
-			debug($data);
-
 			$this->load->view('admin/edit_template', $data);
 		} else {
 			redirect('/admin/templates');
@@ -198,9 +196,6 @@ class Templates extends CI_Controller {
 			$templateTableName = $this->input->post('templateTableName');
 			$templateJSON = $this->input->post('jsonElement');
 			$isNewsTemplate = $this->input->post('isNewsTemplate');
-
-			echo '<pre>';
-			var_dump($_POST);
 
 			//START DATABASE TRANSACTION
 			$this->db->trans_start();
