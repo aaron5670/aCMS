@@ -61,13 +61,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once (BASEPATH .'database/DB.php');
 $db =& DB();
 
-$query = $db->where('page_status', 'published');
-$query = $db->where('is_homepage', 'false');
-$query = $db->get('acms_routes');
-$result = $query->result();
+$db->select('slug, is_newspage');
+$db->where('page_status', 'published');
+$db->where('is_homepage', 'false');
+$result = $db->get('acms_routes')->result();
 
 foreach ($result as $row) {
-	$route[$row->slug] = $row->controller;
+	if ($row->is_newspage) {
+		$route[$row->slug] = 'pages/newspage';
+	}elseif ($row->is_newspage == false) {
+		$route[$row->slug] = 'pages/page';
+	}
 }
 
 $route['translate_uri_dashes'] = true;

@@ -68,11 +68,13 @@
 								</tfoot>
 								<tbody>
 								<?php foreach ($pages as $page): ?>
-									<?php $isHomepage = $page->is_homepage ? 'style="background: #c7c7c76e;"' : null; ?>
-									<tr <?= $isHomepage ?>>
+									<?php $isHomepageOrNewsPage = ($page->is_homepage || $page->is_newspage) ? 'style="background: #c7c7c76e;"' : null; ?>
+									<tr <?= $isHomepageOrNewsPage ?>>
 										<td><?= $page->page_title; ?>
 											<?php if ($page->is_homepage) : ?>
 												<span class="float-md-right">(<i>voorpagina</i>)</span>
+											<?php elseif ($page->is_newspage) : ?>
+												<span class="float-md-right">(<i>nieuwspagina</i>)</span>
 											<?php endif; ?>
 										</td>
 										<td><?= $page->template_name; ?></td>
@@ -110,23 +112,29 @@
 									</tr>
 
 									<!-- Delete page modal -->
-									<div class="modal fade" id="deletePageModal-<?= $page->id ?>" tabindex="-1" role="dialog" aria-labelledby="deletePageLabel"
+									<div class="modal fade" id="deletePageModal-<?= $page->id ?>" tabindex="-1"
+									     role="dialog" aria-labelledby="deletePageLabel"
 									     aria-hidden="true">
 										<div class="modal-dialog modal-dialog-centered" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
 													<h5 class="modal-title" id="deletePageLabel">Pagina verwijderen</h5>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<button type="button" class="close" data-dismiss="modal"
+													        aria-label="Close">
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
 												<div class="modal-body">
 													<b>Let op!</b>
-													<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
+													<p>Als je deze pagina verwijderd kan je hem niet meer terug
+														krijgen!</p>
 												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
-													<a href="<?= site_url('admin/pages/del/' . $page->id) ?>" class="btn btn-danger">Pagina
+													<button type="button" class="btn btn-secondary"
+													        data-dismiss="modal">Annuleren
+													</button>
+													<a href="<?= site_url('admin/pages/del/' . $page->id) ?>"
+													   class="btn btn-danger">Pagina
 														verwijderen</a>
 												</div>
 											</div>

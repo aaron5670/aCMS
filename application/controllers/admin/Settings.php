@@ -18,8 +18,7 @@ class Settings extends CI_Controller {
 		}
 
 		$this->load->model('admin/settings_model');
-		$allPages = $this->settings_model->getAllRoutes();
-		$data['pages'] = $allPages;
+		$data['pages'] = $this->settings_model->getAllRoutes();
 
 		$this->load->view('admin/website-settings', $data);
 	}
@@ -54,6 +53,7 @@ class Settings extends CI_Controller {
 		$this->load->model('admin/settings_model');
 		$data['themes'] = $this->settings_model->getThemes();
 		$data['settings'] = $this->settings_model->getSettings();
+		$data['pages'] = $this->settings_model->getAllRoutes();
 
 		$this->load->view('admin/cms-settings', $data);
 	}
@@ -66,6 +66,16 @@ class Settings extends CI_Controller {
 
 		$postData = $this->input->post();
 
+		$this->db->trans_start();
+		$this->db->set('is_newspage', false);
+		$this->db->update('acms_routes');
+
+		$data = array(
+			'is_newspage' => 1,
+		);
+		$this->db->where('page_id', $postData['siteNewspage']);
+		$this->db->update('acms_routes', $data);
+
 		$data = array(
 			'id' => 1,
 			'site_title' => $postData['siteTitle'],
@@ -73,6 +83,8 @@ class Settings extends CI_Controller {
 			'updated_on' => date("Y-m-d H:i:s"),
 		);
 		$this->db->replace('acms_settings', $data);
+
+		$this->db->trans_complete();
 	}
 
 }

@@ -42,7 +42,7 @@ class Settings_model extends CI_Model {
 	}
 
 	function getAllRoutes() {
-		$this->db->select('page_id, page_title, is_homepage');
+		$this->db->select('page_id, page_title, is_homepage, is_newspage');
 		$this->db->from('acms_pages');
 		$this->db->join('acms_routes', 'acms_routes.page_id = acms_pages.id');
 		$query = $this->db->get();

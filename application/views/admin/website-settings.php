@@ -58,12 +58,11 @@
 											<label for="siteHomepage">Homepagina</label>
 											<select class="form-control" id="siteHomepage" name="siteHomepage"
 											        aria-describedby="siteHomepageHelp">
-												<?php
-												foreach ($pages as $page) :
+												<?php foreach ($pages as $page) :
 													if ($page->is_homepage == true) : ?>
 														<option value="<?= $page->page_id ?>"
 														        selected><?= $page->page_title ?></option>
-													<?php else: ?>
+													<?php elseif ($page->is_newspage != true): ?>
 														<option value="<?= $page->page_id ?>"><?= $page->page_title ?></option>
 													<?php endif; ?>
 												<?php endforeach; ?>

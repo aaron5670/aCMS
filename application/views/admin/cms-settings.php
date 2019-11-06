@@ -38,14 +38,15 @@
 					Pas hier de instellingen van het CMS en de website aan.
 				</p>
 
-				<div class="row">
-					<div class="col-md-6">
-						<div class="card shadow mb-4">
-							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Algemene instellingen</h6>
-							</div>
-							<div class="card-body">
-								<form id="settingsForm" method="post">
+				<form id="settingsForm" method="post">
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Algemene instellingen</h6>
+								</div>
+								<div class="card-body">
 									<div class="form-group">
 										<label for="website-title">Website titel</label>
 										<input type="text" class="form-control" id="website-title" name="siteTitle"
@@ -61,7 +62,8 @@
 											<?php
 											foreach ($themes as $theme) :
 												if ($theme === $settings->site_theme) : ?>
-													<option value="<?= $theme; ?>" selected><?= ucfirst(str_replace('themes\\', "", $theme)); ?></option>
+													<option value="<?= $theme; ?>"
+													        selected><?= ucfirst(str_replace('themes\\', "", $theme)); ?></option>
 												<?php else: ?>
 													<option value="<?= $theme; ?>"><?= ucfirst(str_replace('themes\\', "", $theme)); ?></option>
 												<?php endif; ?>
@@ -73,12 +75,42 @@
 										</small>
 									</div>
 									<button type="submit" class="btn btn-primary">Opslaan</button>
-								</form>
+								</div>
 							</div>
+
 						</div>
 
+						<div class="col-md-6">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Nieuws instellingen</h6>
+								</div>
+								<div class="card-body">
+									<div class="form-group">
+										<label for="siteNewspage">Nieuwspagina</label>
+										<select class="form-control" id="siteNewspage" name="siteNewspage"
+										        aria-describedby="siteNewspageHelp">
+											<?php foreach ($pages as $page) :
+												if ($page->is_newspage == true) : ?>
+													<option value="<?= $page->page_id ?>"
+													        selected><?= $page->page_title ?></option>
+												<?php elseif ($page->is_homepage != true): ?>
+													<option value="<?= $page->page_id ?>"><?= $page->page_title ?></option>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</select>
+										<small id="siteNewspageHelp" class="form-text text-muted">
+											<strong>Let op:</strong> Dit verandert de nieuwspagina van de website!
+											<u>Doe dit niet zomaar!</u>
+										</small>
+									</div>
+									<button type="submit" class="btn btn-primary">Opslaan</button>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
+
+				</form>
 
 			</div>
 			<!-- /.container-fluid -->

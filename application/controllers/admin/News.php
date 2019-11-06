@@ -66,6 +66,18 @@ class News extends CI_Controller {
 			$this->db->where('id', $newsID);
 			$this->db->update('acms_news', $data);
 
+			//For the formioJS file upload component
+			foreach ($postData['data'] as $key => $data) {
+				if (is_array($data)) {
+					foreach ($data as $sub_data) {
+						if (isset($sub_data['url'])) {
+							$postData['data'][$key] = $sub_data['url'];
+						}
+						continue;
+					}
+				}
+			}
+
 			//Update template table with page data
 			$this->db->where('news_id', $newsID);
 			$this->db->update($postData['newsTemplateTable'], $postData['data']);

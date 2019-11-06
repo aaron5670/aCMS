@@ -85,19 +85,20 @@
 										<div class="modal-dialog modal-dialog-centered" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title" id="deletePageLabel">Pagina verwijderen</h5>
+													<h5 class="modal-title" id="deletePageLabel">Nieuws bericht verwijderen</h5>
 													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
 												<div class="modal-body">
 													<b>Let op!</b>
-													<p>Als je deze pagina verwijderd kan je hem niet meer terug krijgen!</p>
+													<p>Als je dit bericht verwijderd kan je hem niet meer terug krijgen!</p>
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
-													<a href="<?= site_url('admin/news/del/' . $news_item->id) ?>" class="btn btn-danger">Pagina
-														verwijderen</a>
+													<a href="<?= site_url('admin/news/del/' . $news_item->id) ?>" class="btn btn-danger">
+														Bericht verwijderen
+													</a>
 												</div>
 											</div>
 										</div>

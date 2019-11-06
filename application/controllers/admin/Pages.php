@@ -22,6 +22,7 @@ class Pages extends CI_Controller {
 			'acms_pages.page_title',
 			'acms_pages.updated_on',
 			'acms_routes.is_homepage',
+			'acms_routes.is_newspage',
 			'acms_routes.slug',
 			'acms_routes.page_status',
 			'users.first_name',
@@ -187,7 +188,6 @@ class Pages extends CI_Controller {
 			//Insert $dataRoutesTable into the acms_routes table
 			$dataRoutesTable = array(
 				'slug'        => $slug,
-				'controller'  => 'pages/page',
 				'page_id'     => $pageID,
 				'page_status' => $postData['pageStatus'],
 				'updated_on'  => date("Y-m-d H:i:s"),

@@ -12,7 +12,7 @@ class Pages extends CI_Controller {
 		parent::__construct();
 
 		//load page model
-		$this->load->model(array('page_model', 'admin/settings_model', 'admin/menu_model', 'admin/settings_model'));
+		$this->load->model(array('page_model', 'news_model', 'admin/settings_model', 'admin/menu_model', 'admin/settings_model'));
 
 		//get slug without the first slash
 		if (isset($_SERVER['PATH_INFO'])) {
@@ -64,6 +64,38 @@ class Pages extends CI_Controller {
 				}
 			} else {
 				show_404('ERROR: Homepage not found!');
+			}
+		} else {
+			echo 'Error theme: <b>' . $this->current_theme . '</b> not found';
+		}
+	}
+
+	//ToDo: pretty error handling if a template isn't found on the server (default template)
+	public function newspage() {
+		$newspageData = $this->news_model->getNewspage();
+
+		if (file_exists($this->current_theme)) {
+			if ($newspageData) {
+				if (file_exists($this->site_theme_path)) {
+					if (file_exists($this->site_theme_path . DIRECTORY_SEPARATOR . $newspageData->template_file_name)) {
+
+						$newspageData->_MenuItems = $this->menu;
+						$newspageData->_SiteTitle = $this->settings_model->getSiteTitle();
+						$newspageData->_NewsItems = $this->news_model->getNewsItems();
+
+						//debug($newspageData);
+
+						$this->load->view($this->site_theme_view . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $newspageData->template_file_name, $newspageData);
+					} else {
+						echo 'Page template <b>' . $this->current_theme . DIRECTORY_SEPARATOR . $newspageData->template_file_name . '</b> not found!';
+					}
+				} else {
+					mkdir($this->site_theme_path, 0777);
+					echo "The directory $this->site_theme_path was not found, but is now successfully created.";
+					exit;
+				}
+			} else {
+				show_404('ERROR: Newspage not found!');
 			}
 		} else {
 			echo 'Error theme: <b>' . $this->current_theme . '</b> not found';
