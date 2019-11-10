@@ -1,5 +1,6 @@
 {
     "require": {
-        "samdark/sitemap": "^2.2"
+        "samdark/sitemap": "^2.2",
+        "swiftmailer/swiftmailer": "^6.0"
     }
 }
