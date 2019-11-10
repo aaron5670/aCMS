@@ -13,6 +13,9 @@ class Pages extends CI_Controller {
 			redirect('/auth', 'refresh');
 			exit();
 		}
+
+		//regenerate sitemap
+		sitemap_generator();
 	}
 
 	public function index() {
