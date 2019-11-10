@@ -110,3 +110,5 @@ $route['admin/add/template']['post'] = 'admin/templates/newTemplatePost';
 
 $route['admin/settings'] = 'admin/settings/websiteSettings';
 $route['admin/settings/cms'] = 'admin/settings/cmsSettings';
+
+$route['mail/send'] = 'mail/send';

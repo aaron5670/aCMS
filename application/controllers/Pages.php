@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pages extends CI_Controller {
 
@@ -13,6 +12,7 @@ class Pages extends CI_Controller {
 
 		//load page model
 		$this->load->model(array('page_model', 'news_model', 'admin/settings_model', 'admin/menu_model', 'admin/settings_model'));
+		$this->load->helper('form');
 
 		//get slug without the first slash
 		if (isset($_SERVER['PATH_INFO'])) {
@@ -104,7 +104,7 @@ class Pages extends CI_Controller {
 
 	//ToDo: pretty error handling if a template isn't found on the server (default template)
 	public function page() {
-//		debug($this->data);
+		//debug($this->data);
 
 		if (file_exists($this->current_theme)) {
 			if (file_exists($this->site_theme_path)) {
